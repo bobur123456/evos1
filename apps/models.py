@@ -143,3 +143,6 @@ class ShoppingCart(BaseCreatedModel):
     
     def __str__(self):
         return self.user.username
+    
+
+

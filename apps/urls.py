@@ -1,7 +1,9 @@
 from django.urls import path
 # Bu yerga save_application funksiyasini ham qo'shib qo'yamiz
-from .views import evosView, qirikodView, MalumotView, turarjoyView, save_application, ProductDetailView,manzilView, ShoppingCartList, add_to_cart, remove_to_cart
-
+from .views import (evosView, qirikodView, MalumotView, turarjoyView,
+save_application, ProductDetailView,manzilView, ShoppingCartList,
+add_to_cart, remove_to_cart,UserRegisterView,UserLoginView
+)
 urlpatterns = [
     path('', evosView.as_view(), name='aa'),
     path('qirikod/', qirikodView.as_view(), name='qirikod'),
@@ -9,6 +11,8 @@ urlpatterns = [
     path('turarjoy/', turarjoyView.as_view(), name='turarjoy'),
     path('manzil/', manzilView.as_view(), name='manzil'),
     path('savat/', ShoppingCartList.as_view(), name='savat'),
+    path('login/', UserLoginView.as_view(), name='login'),
+    path('register/', UserRegisterView.as_view(), name='register'),
     path('product/<slug:slug>/', ProductDetailView.as_view(), name='product'),
     
     # Formani ko'rsatish va saqlash manzillari

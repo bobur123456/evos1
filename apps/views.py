@@ -5,6 +5,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
 
+from django.contrib import messages
+from django.contrib.auth import login, logout
+from apps.forms import UserLoginForm, UserRegisterForm
+from apps.mixsins import NotLoginRequiredMixin
+from .models import Users
+
+
+from django.views.generic import TemplateView,CreateView, FormView
+
+
 class evosView(ListView):
     model = Category
     template_name = "base.html"
@@ -81,7 +91,7 @@ class ProductDetailView(DetailView):
     slug_field = "slug"
     
 class ShoppingCartList(LoginRequiredMixin, TemplateView):
-    template_name = 'product/shopping-cart.html'
+    template_name = 'product/savat.html'
     login_url = 'login'
 
 
@@ -110,3 +120,39 @@ def remove_to_cart(request, pk):
         db_card.delete()
         return redirect('shopping_cart')
     return redirect('shopping_cart')
+
+
+
+
+class UserRegisterView(NotLoginRequiredMixin, CreateView):
+    model = Users
+    form_class = UserRegisterForm
+    template_name = 'auth/register.html'
+    success_url = '/'
+
+
+
+class UserLoginView(NotLoginRequiredMixin, FormView):
+    form_class = UserLoginForm
+    template_name = 'auth/login.html'
+    success_url = '/'
+
+    def form_valid(self, form):
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        db_user = Users.objects.filter(username=username).first()
+        
+        if db_user and db_user.check_password(password):
+            if db_user.user_type == "operator":
+                messages.success(self.request, "Xush kelibsiz ✅")
+                login(self.request, db_user)
+                return redirect('operator_list')
+            else:
+                login(self.request, db_user)
+                messages.success(self.request, "Xush kelibsiz ✅")
+                return redirect(self.success_url)
+        
+        messages.error(self.request, "Parol yoki Login Xato ❌")
+        return self.form_invalid(form)
+    
+

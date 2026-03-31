@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="uz">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVOS - Mahsulot Batafsil</title>
+    <title>EVOS - {{ product.name }}</title>
     <style>
         body {
             margin: 0;
@@ -19,14 +20,13 @@
             padding: 40px 20px;
         }
 
-        /* --- RASMDAGI USLUBDA MAHSULOT KARTASI --- */
         .product-detail-card {
             background-color: #ffffff;
             border-radius: 12px;
             display: flex;
             padding: 30px;
             gap: 40px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
             margin-bottom: 50px;
         }
 
@@ -37,12 +37,13 @@
             border: 1px solid #eee;
             border-radius: 8px;
             overflow: hidden;
+            background-color: #fff; /* Oq fon */
         }
 
         .detail-image img {
             max-width: 100%;
             height: auto;
-            object-fit: cover;
+            object-fit: contain; /* Rasmni kesib tashlamasligi uchun */
         }
 
         .detail-info {
@@ -62,6 +63,7 @@
             font-size: 14px;
             margin-bottom: 5px;
         }
+
         .reviews-count {
             color: #888;
             font-size: 12px;
@@ -73,44 +75,32 @@
             line-height: 1.5;
             color: #444;
             margin-bottom: 25px;
-            word-break: break-all; /* Rasmda matn juda uzun va birikkan edi */
+            word-wrap: break-word; /* Uzun matnlarni (git linklar kabi) tushirish uchun */
         }
 
-        /* Narxlar qismi */
         .price-section {
             margin-bottom: 20px;
         }
+
         .current-price {
             font-size: 26px;
             font-weight: 700;
-            color: #f27041; /* To'q sariq/qizilroq rang */
+            color: #f27041;
         }
+
         .old-price {
             text-decoration: line-through;
             color: #999;
             margin-left: 10px;
             font-size: 18px;
         }
+
         .discount-badge {
             color: #f27041;
             margin-left: 10px;
             font-weight: bold;
         }
 
-        /* Yetkazib berish va ombor */
-        .shipping-info {
-            font-size: 14px;
-            margin-bottom: 10px;
-            color: #555;
-        }
-        .shipping-info b { color: #000; }
-        .stock-status {
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-        .stock-status span { color: #28a745; font-weight: bold; }
-
-        /* Harakatlar bloki */
         .actions-row {
             display: flex;
             align-items: center;
@@ -124,6 +114,7 @@
             border-radius: 4px;
             overflow: hidden;
         }
+
         .cnt-btn {
             background: #fff;
             border: none;
@@ -132,7 +123,11 @@
             font-size: 18px;
             color: #666;
         }
-        .cnt-btn:hover { background: #f0f0f0; }
+
+        .cnt-btn:hover {
+            background: #f0f0f0;
+        }
+
         .cnt-num {
             padding: 8px 15px;
             border-left: 1px solid #ddd;
@@ -155,10 +150,16 @@
             max-width: 200px;
             transition: 0.2s;
         }
-        .add-to-cart-btn:hover { background-color: #2452c1; }
 
-        /* --- CAROUSEL QISMI --- */
-        .carousel-title { font-size: 22px; margin-bottom: 20px; }
+        .add-to-cart-btn:hover {
+            background-color: #2452c1;
+        }
+
+        .carousel-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
         .products-carousel {
             display: flex;
             overflow-x: auto;
@@ -166,17 +167,27 @@
             padding-bottom: 20px;
             scrollbar-width: thin;
         }
+
         .product_card {
             background: white;
             min-width: 220px;
             border-radius: 10px;
             padding: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            text-decoration: none;
+            color: inherit;
         }
-        .product_card img { width: 100%; border-radius: 8px; }
 
-        /* Ortga tugmasi */
-        .back-container { text-align: center; margin-top: 30px; }
+        .product_card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .back-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
         .back-btn {
             color: #3167eb;
             text-decoration: none;
@@ -187,70 +198,112 @@
         }
 
         @media (max-width: 850px) {
-            .product-detail-card { flex-direction: column; }
-            .add-to-cart-btn { max-width: 100%; }
+            .product-detail-card {
+                flex-direction: column;
+            }
+
+            .add-to-cart-btn {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    
-    <div class="product-detail-card">
-        <div class="detail-image">
-            <img src="https://admin.evos.uz/uploads/Sub_tovuq_goshtidan_907f154101.png" alt="Mahsulot nomi">
-        </div>
+    <div class="container">
 
-        <div class="detail-info">
-            <h1>Sub tovuq go'shtidan</h1>
-            <div class="rating-row">1</div>
-            <div class="reviews-count">(8)</div>
-
-            <p class="desc">
-                skdmsdsskdmsdskdmsdskdmsdskdmsdskdmsdskdmsdsdskdmsdsdkdmsdsdkdmsdsdkdmsdsdkdmsdsdkdmsdsdkdmsdsdkdmsdsdkdmsdsdkdmsdsdkdmsdsdkdmsdsdkdmsdsdkdmsdsdkdmsdsdkdmsds
-            </p>
-
-            <div class="price-section">
-                <span class="current-price">2 UZS</span>
-                <span class="old-price">3 UZS</span>
-                <span class="discount-badge">-3%</span>
+        <div class="product-detail-card">
+            <div class="detail-image">
+                {% if product.img %}
+                    <img src="{{ product.img.first.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <img src="https://admin.evos.uz/uploads/Sub_tovuq_goshtidan_907f154101.png" alt="Rasm topilmadi">
+                {% endif %}
             </div>
-
-            <div class="shipping-info">
-                Yetkazib berish: <b>50,000 UZS</b>
-            </div>
-
-            <div class="stock-status">
-                Omborda: <span>Mavjud</span>
-            </div>
-
-            <p style="font-size: 14px; color: #888; margin: 0 0 10px 0;">Teglar:</p>
-
-            <div class="actions-row">
-                <div class="counter-group">
-                    <button class="cnt-btn">-</button>
-                    <div class="cnt-num">1</div>
-                    <button class="cnt-btn">+</button>
+            <div class="detail-info">
+                <h1>{{ product.name }}</h1>
+                <div class="rating-row">
+                    {% if product.is_hit %}
+                    <span style="background:#ffc107; color:black; padding:2px 6px; border-radius:4px; font-size:10px; font-weight: bold;">HIT</span>
+                    {% endif %}
+                    ★★★★★
                 </div>
-                <button class="add-to-cart-btn">Savatga qo'shish</button>
+                <div class="reviews-count">(8 sharh)</div>
+
+                <p class="desc">
+                    {{ product.description }}
+                </p>
+
+                <div class="price-section">
+                    {% if product.sale > 0 %}
+                    <span class="current-price">{{ product.price }} UZS</span>
+                    <span class="old-price">{% widthratio product.price 100 110 %} UZS</span>
+                    <span class="discount-badge">-{{ product.sale }}%</span>
+                    {% else %}
+                    <span class="current-price">{{ product.price }} UZS</span>
+                    {% endif %}
+                </div>
+
+                <p style="font-size: 14px; color: #888; margin: 0 0 10px 0;">Teglar:</p>
+                <div style="margin-bottom: 20px;">
+                    {% for tag in product.tags.all %}
+                    <span style="background: #e9ecef; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin-right: 5px;">#{{ tag.name }}</span>
+                    {% empty %}
+                    <span style="color: #ccc; font-size: 12px;">Teglar mavjud emas</span>
+                    {% endfor %}
+                </div>
+
+                <div class="actions-row">
+                    <div class="counter-group">
+                        <button class="cnt-btn" onclick="updateQty(-1)">-</button>
+                        <div class="cnt-num" id="qty">1</div>
+                        <button class="cnt-btn" onclick="updateQty(1)">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" {% if product.count == 0 %} disabled style="background:#ccc;" {% endif %}>
+                        Savatga qo'shish
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <h2 class="carousel-title">Boshqa mahsulotlar</h2>
-    <div class="products-carousel">
-        <div class="product_card">
-            <img src="https://admin.evos.uz/uploads/Sub_tovuq_goshtidan_907f154101.png" alt="">
-            <h4 style="margin: 10px 0 5px;">Mahsulot nomi</h4>
-            <p style="color: #006b44; font-weight: bold;">15,000 so'm</p>
+        <h2 class="carousel-title">O'xshash mahsulotlar</h2>
+        <div class="products-carousel">
+            {% for related in product.category.products.all %}
+            {% if related.id != product.id %}
+            <a href="{{ related.slug }}" class="product_card">
+                {% if related.image %}
+                    <img src="{{ related.image.url }}" alt="{{ related.name }}">
+                {% else %}
+                    <img src="https://admin.evos.uz/uploads/Sub_tovuq_goshtidan_907f154101.png" alt="{{ related.name }}">
+                {% endif %}
+                <h4 style="margin: 10px 0 5px;">{{ related.name }}</h4>
+                <p style="color: #3167eb; font-weight: bold;">{{ related.price }} UZS</p>
+            </a>
+            {% endif %}
+            {% endfor %}
         </div>
+
+        <div class="back-container">
+            <a href="{% url 'aa' %}" class="back-btn">Ortga qaytish</a>
+        </div>
+
     </div>
 
-    <div class="back-container">
-        <a href="{% url 'aa' %}" class="back-btn">Ortga qaytish</a>
-    </div>
+    <script>
+        function updateQty(delta) {
+            const qtyEl = document.getElementById('qty');
+            let currentQty = parseInt(qtyEl.innerText);
+            // Django'dan kelayotgan mahsulot sonini tekshirish
+            let maxQty = {{ product.count|default:10 }};
 
-</div>
+            let newQty = currentQty + delta;
+            if (newQty >= 1 && newQty <= maxQty) {
+                qtyEl.innerText = newQty;
+            }
+        }
+    </script>
 
 </body>
+
 </html>

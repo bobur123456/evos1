@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Falcon | Food Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --primary: #007d53;
+            --primary-hover: #005f3f;
+            --accent: #ffc107;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
+            --radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            padding-bottom: 50px;
+        }
+
+        /* Sarlavha */
+        header {
+            background: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Mahsulotlar To'plami */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        /* Mahsulot Kartasi */
+        .product-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .img-wrapper {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.1);
+        }
+
+        .product-info h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            height: 44px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .price-tag {
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .add-to-cart-btn {
+            background: var(--accent);
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #eab000;
+            transform: scale(1.02);
+        }
+
+        /* SAVATCHA SIDEBAR */
+        #cartOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+            z-index: 998;
+        }
+
+        #cartSidebar {
+            position: fixed;
+            top: 0;
+            right: -420px;
+            width: 400px;
+            height: 100%;
+            background: var(--white);
+            z-index: 999;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 40px rgba(0,0,0,0.15);
+        }
+
+        .cart-open #cartSidebar { right: 0; }
+        .cart-open #cartOverlay { display: block; }
+
+        .cart-header {
+            padding: 25px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #cartItemsList {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f9f9f9;
+        }
+
+        .cart-item img {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .item-details { flex: 1; }
+        .item-details h4 { font-size: 15px; margin-bottom: 4px; }
+        .item-price { color: var(--primary); font-weight: 700; }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            background: #f1f3f5;
+            border-radius: 10px;
+            padding: 4px;
+        }
+
+        .qty-btn {
+            background: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .cart-footer {
+            padding: 25px;
+            border-top: 1px solid #eee;
+            background: #fafafa;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .checkout-button {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .checkout-button:hover { background: var(--primary-hover); }
+        .checkout-button:disabled { background: #ccc; cursor: not-allowed; }
+
+        @media (max-width: 480px) {
+            #cartSidebar { width: 100%; right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="#" class="logo">FALCON</a>
+    <div onclick="toggleCart(true)" style="position: relative; cursor: pointer;">
+        <i data-lucide="shopping-basket" style="color: var(--primary);"></i>
+        <span id="cartCount" style="position: absolute; top: -8px; right: -8px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold;">0</span>
+    </div>
+</header>
+
+<div class="container">
+    <div class="product-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <div class="img-wrapper">
+                {% with first_img=product.img.first %}
+                    <img src="{% if first_img %}{{ first_img.image.url }}{% else %}https://via.placeholder.com/300x200{% endif %}" 
+                         alt="{{ product.name }}" class="product-img">
+                {% endwith %}
+            </div>
+            
+            <div class="product-info">
+                <h3>{{ product.name }}</h3>
+                <p class="price-tag">{{ product.price|floatformat:0 }} so'm</p>
+            </div>
+
+            <button class="add-to-cart-btn" 
+                    onclick="addToCart('{{ product.id }}', '{{ product.name|escapejs }}', {{ product.price }}, '{% with i=product.img.first %}{% if i %}{{ i.image.url }}{% endif %}{% endwith %}')">
+                <i data-lucide="plus-circle" size="18"></i>
+                Savatga qo'shish
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="cartOverlay" onclick="toggleCart(false)"></div>
+
+<div id="cartSidebar">
+    <div class="cart-header">
+        <h2 style="display: flex; align-items: center; gap: 10px;">
+            <i data-lucide="shopping-cart"></i> Buyurtmangiz
+        </h2>
+        <i data-lucide="x" onclick="toggleCart(false)" style="cursor: pointer; color: var(--text-muted);"></i>
+    </div>
+
+    <div id="cartItemsList">
+        </div>
+
+    <div class="cart-footer">
+        <div class="total-row">
+            <span>Jami:</span>
+            <span id="totalPrice" style="color: var(--primary);">0 so'm</span>
+        </div>
+        <button id="checkoutBtn" onclick="goToCheckout()" class="checkout-button">
+            Buyurtma berish
+        </button>
+    </div>
+</div>
+
+<script>
+    // Ikonkalarni yuklash
+    lucide.createIcons();
+
+    // LocalStorage-dan ma'lumotlarni olish
+    let cart = JSON.parse(localStorage.getItem('falcon_cart')) || [];
+
+    function toggleCart(show) {
+        document.body.classList.toggle('cart-open', show);
+    }
+
+    function addToCart(id, name, price, img) {
+        const item = cart.find(i => i.id === id);
+        if (item) {
+            item.qty++;
+        } else {
+            cart.push({ 
+                id, 
+                name, 
+                price, 
+                img: img || 'https://via.placeholder.com/100', 
+                qty: 1 
+            });
+        }
+        saveAndRender();
+        toggleCart(true);
+    }
+
+    function changeQty(id, delta) {
+        const item = cart.find(i => i.id === id);
+        if (item) {
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            }
+        }
+        saveAndRender();
+    }
+
+    function saveAndRender() {
+        localStorage.setItem('falcon_cart', JSON.stringify(cart));
+        renderCart();
+    }
+
+    function renderCart() {
+        const list = document.getElementById('cartItemsList');
+        const totalSpan = document.getElementById('totalPrice');
+        const countSpan = document.getElementById('cartCount');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        
+        countSpan.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+
+        if (cart.length === 0) {
+            list.innerHTML = `
+                <div style="text-align:center; padding: 50px 0; color:#ccc;">
+                    <i data-lucide="shopping-bag" size="60" style="margin-bottom:15px; opacity:0.3;"></i>
+                    <p>Savatchangiz bo'sh</p>
+                </div>`;
+            totalSpan.innerText = "0 so'm";
+            checkoutBtn.disabled = true;
+            lucide.createIcons();
+            return;
+        }
+
+        checkoutBtn.disabled = false;
+        let total = 0;
+        
+        list.innerHTML = cart.map(item => {
+            total += item.price * item.qty;
+            return `
+                <div class="cart-item">
+                    <img src="${item.img}">
+                    <div class="item-details">
+                        <h4>${item.name}</h4>
+                        <div class="item-price">${(item.price * item.qty).toLocaleString()} so'm</div>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="changeQty('${item.id}', -1)">-</button>
+                        <span style="margin:0 12px; font-weight:700;">${item.qty}</span>
+                        <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        totalSpan.innerText = total.toLocaleString() + " so'm";
+        lucide.createIcons();
+    }
+
+    function goToCheckout() {
+        // Django url-ga yo'naltirish
+        window.location.href = "{% url 'manzil' %}"; 
+    }
+
+    // Birinchi marta yuklanganda
+    renderCart();
+</script>
+
+</body>
+</html>

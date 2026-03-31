@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.text import slugify
 from datetime import datetime, timedelta, timezone
@@ -11,6 +12,32 @@ class BaseCreatedModel(models.Model):
     class Meta:
         abstract = True
 
+
+class Users(AbstractUser):
+
+    class UserTypeChoice(models.TextChoices):
+        ADMIN = 'admin', 'Admin'
+        CLIENT = 'client', 'Mijoz'
+        OPERATOR = 'operator', 'Operator'
+
+    avatar = models.ImageField(upload_to='avatar/', blank=True, null=True)
+    banner = models.ImageField(upload_to='banner/', blank=True, null=True)
+    intro = models.CharField(max_length=500, blank=True, null=True)
+    user_type = models.CharField(
+        max_length=30,
+        choices=UserTypeChoice.choices,
+        default=UserTypeChoice.CLIENT
+    )
+
+    def __str__(self):
+        return self.username
+    
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} - {self.last_name}"
+    
+    
 
 class Category(BaseCreatedModel):
     name = models.CharField(max_length=100, verbose_name="Kategoriya nomi")
@@ -29,6 +56,7 @@ class Tags(BaseCreatedModel):
 
     def __str__(self):
         return self.name
+    
 
 
 class Product(BaseCreatedModel):
@@ -44,6 +72,7 @@ class Product(BaseCreatedModel):
     tags = models.ManyToManyField(Tags, blank=True, related_name='tag_list')
 
     def save(self, *args, **kwargs):
+        
         if not self.slug:
             self.slug = slugify(self.name)
             while Product.objects.filter(slug=self.slug).exists():
@@ -93,3 +122,24 @@ class Banner(BaseCreatedModel):
 
     def __str__(self):
         return self.title
+    
+    
+class ManzilSaqlash(BaseCreatedModel):
+    manzil = models.CharField(max_length=255, verbose_name="Manzil nomi")
+    uy = models.CharField(max_length=50, blank=True, null=True, verbose_name="Uy/Ofis")
+    domofon = models.CharField(max_length=50, blank=True, null=True, verbose_name="Domofon")
+    kirish = models.CharField(max_length=50, blank=True, null=True, verbose_name="Kirish")
+    qavat = models.CharField(max_length=50, blank=True, null=True, verbose_name="Qavat")
+    izoh = models.TextField(blank=True, null=True, verbose_name="Izoh")
+    created_at = models.DateTimeField(auto_now_add=True) # Qachon saqlanganini bilish uchun
+
+    def __str__(self):
+        return f"{self.manzil} - {self.uy}-uy"
+    
+
+class ShoppingCart(BaseCreatedModel):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='cart_list')
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='my_carts')
+    
+    def __str__(self):
+        return self.user.username

@@ -1,15 +1,33 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView, DetailView
-from .models import Qirikod,Application, Product
+from .models import Qirikod,Application, Product,Category, ShoppingCart
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
-class evosView(TemplateView):
+class evosView(ListView):
+    model = Category
     template_name = "base.html"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['product'] = Product.objects.all()
+        context['category'] = Category.objects.all()
         return context
+    
+    def get_queryset(self):
+        
+        category = self.request.GET.get('category')
+        
+        if category:
+            
+            return Product.objects.filter(category__name=category).first()
+        
+        return Product.objects.all()
+    
+class manzilView(TemplateView):
+    template_name = "product/manzil.html"
+        
     
     
     
@@ -61,3 +79,34 @@ class ProductDetailView(DetailView):
     template_name = 'product/product_detail.html'
     context_object_name = 'product'
     slug_field = "slug"
+    
+class ShoppingCartList(LoginRequiredMixin, TemplateView):
+    template_name = 'product/shopping-cart.html'
+    login_url = 'login'
+
+
+@login_required(login_url='login')
+def add_to_cart(request):
+    
+    if request.method == "POST":
+        data = request.POST
+        product_id = data.get('product')
+        user_id = request.user.id
+        new_cart = ShoppingCart.objects.create(
+            product_id=product_id,
+            user_id=user_id
+        )
+        new_cart.save()
+        
+        return redirect('shopping_cart')
+
+
+@login_required(login_url='login')
+def remove_to_cart(request, pk):
+    product_id = pk
+    user_id = request.user.id
+    db_card = ShoppingCart.objects.filter(id=product_id, user_id=user_id)
+    if db_card.exists():
+        db_card.delete()
+        return redirect('shopping_cart')
+    return redirect('shopping_cart')

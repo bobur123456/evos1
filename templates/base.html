@@ -12,6 +12,7 @@
             padding: 0;
             font-family: 'Inter', sans-serif, Arial;
             background-color: #f4f4f4;
+            color: #333;
         }
 
         /* --- HEADER QISMI --- */
@@ -104,6 +105,61 @@
             object-fit: cover;
         }
 
+        /* --- KATEGORIYA TABS (YANGI QO'SHILDI) --- */
+        .category-tabs {
+            background-color: white;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 65px;
+            /* Header balandligidan keyin turishi uchun */
+            z-index: 999;
+        }
+
+        .tabs-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .tabs-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            white-space: nowrap;
+            scrollbar-width: none;
+            /* Firefox uchun scrollni yashirish */
+        }
+
+        .tabs-list::-webkit-scrollbar {
+            display: none;
+            /* Chrome/Safari uchun scrollni yashirish */
+        }
+
+        .tabs-list li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 12px;
+            background-color: #f5f5f5;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .tabs-list li a:hover {
+            background-color: #e0e0e0;
+        }
+
+        .tabs-list li a.active {
+            background-color: #006b44;
+            color: white;
+        }
+
         /* --- HERO VA CAROUSEL SECTION --- */
         .hero-container {
             background-color: #2e7d32;
@@ -112,10 +168,8 @@
             padding: 60px 20px;
             display: flex;
             flex-direction: column;
-            /* Elementlarni ustma-ust qilish uchun */
             align-items: center;
             gap: 60px;
-            /* Hero va Karusel orasidagi masofa */
         }
 
         .hero-content {
@@ -249,20 +303,16 @@
         .products-carousel {
             display: flex;
             overflow-x: auto;
-            /* Sürükleme imkoni */
             gap: 20px;
             width: 100%;
             max-width: 1150px;
             padding: 10px 10px 30px 10px;
             scrollbar-width: none;
-            /* Firefox */
         }
 
         .products-carousel::-webkit-scrollbar {
             display: none;
         }
-
-        /* Chrome/Safari */
 
         .product_card {
             background: white;
@@ -378,6 +428,11 @@
             .products-carousel {
                 padding-left: 20px;
             }
+
+            .category-tabs {
+                top: 0;
+                /* Mobilda header yopilib qolsa */
+            }
         }
     </style>
 </head>
@@ -399,11 +454,11 @@
 
             <div class="nav-right">
                 <div class="header-action">
-                    <span>📍 улица Марс</span>
+                 <a href="{% url 'manzil' %}"><button>📍 улица Марс</button></a>
                     <span>▾</span>
                 </div>
                 <button class="header-action cart-btn">
-                    <span>🛍️ Savat</span>
+                    <a href="{% url 'savat' %}">savat</a>
                 </button>
                 <div class="header-action">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Flag_of_Uzbekistan.svg" alt="UZ"
@@ -414,7 +469,6 @@
             </div>
         </div>
     </header>
-
     <section class="hero-container">
         <div class="hero-content">
             <div class="hero-left">
@@ -455,7 +509,26 @@
                 </div>
             </div>
         </div>
-
+        <div class="tabs-container">
+            <form action="" method="get">
+                <ul class="tabs-list" style="display: flex; list-style: none; gap: 10px; overflow-x: auto;">
+                    <li>
+                        <button type="submit" name="category" value=""
+                            class="{% if not request.GET.category %}active{% endif %}">
+                            Barchasi
+                        </button>
+                    </li>
+                    {% for i in category %}
+                    <li>
+                        <button type="submit" name="category" value="lavash"
+                            class="{% if request.GET.category == 'lavash' %}active{% endif %}">
+                            {{ i.name }}
+                        </button>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </form>
+        </div>
         <div class="products-carousel">
             {% for i in product %}
             <a style="text-decoration: none;" href="{% url 'product' i.slug %}">

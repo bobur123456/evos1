@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="uz">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,13 @@
     <title>EVOS - Food Delivery</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
     </style>
 </head>
+
 <body class="bg-gray-50">
 
     <header class="bg-white border-b sticky top-0 z-50">
@@ -25,12 +30,14 @@
                 </nav>
             </div>
             <div class="flex items-center gap-4">
-                <div class="hidden sm:flex items-center gap-2 text-sm text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full">
-                    <span>📍</span> <span>улица Марс</span>
+                <div
+                    class="hidden sm:flex items-center gap-2 text-sm text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full">
+                    <span>📍</span> <a href="{% url 'manzil' %}"><button class="hover:text-green-700">улица
+                            Марс</button></a>
                 </div>
                 <div class="bg-[#1c5c2d] text-white px-4 py-1.5 rounded-lg flex items-center gap-2 font-bold">
                     <span>🛍️</span>
-                    <a href="{% url 'savat' %}"><button>Savat</button></a>
+                    <a href="{% url 'savat' %}">Savat</a>
                 </div>
                 <button class="bg-gray-100 p-2 rounded-lg">👤</button>
             </div>
@@ -38,8 +45,6 @@
     </header>
 
     <section class="bg-[#1c5c2d] text-white py-12 px-4 relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-4 bg-[url('https://path-to-pattern.jpg')] bg-repeat-x"></div>
-        
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 mt-4">
             <div class="md:w-1/2">
                 <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
@@ -47,55 +52,63 @@
                 </h1>
                 <div class="flex gap-4 mb-6 text-2xl">🌯 🍔 🍟 🥪 🥤</div>
                 <p class="text-gray-200 mb-8 max-w-lg">
-                    Qishning haqiqiy mo'jizasini Siz bilan bo'lishishdan mamnunmiz – klyukvali to'plami endi Toshkent bo'ylab, barcha EVOS filiallarida mavjud.
+                    Qishning haqiqiy mo'jizasini Siz bilan bo'lishishdan mamnunmiz – klyukvali to'plami endi Toshkent
+                    bo'ylab barcha EVOS filiallarida mavjud.
                 </p>
-                
+
                 <div class="grid grid-cols-2 gap-4 max-w-md">
                     <button class="bg-[#3eb308] py-3 rounded-lg font-bold hover:opacity-90">Bizning menyu</button>
                     <button class="bg-[#3eb308] py-3 rounded-lg font-bold hover:opacity-90">APP Evos →</button>
                     <button class="bg-[#3eb308] py-3 rounded-lg font-bold hover:opacity-90">Mahsulot tarkibi</button>
-                    <button class="border border-white/30 py-3 rounded-lg font-bold hover:bg-white/10">Hamkorlar uchun</button>
+                    <button class="border border-white/30 py-3 rounded-lg font-bold hover:bg-white/10">Hamkorlar
+                        uchun</button>
                 </div>
             </div>
 
             <div class="md:w-1/2 relative group">
-                <img src="http://admin.evos.uz/uploads/sajt_ru_3_043fc9343f.png" class="rounded-[2.5rem] shadow-2xl w-full">
-                <div class="absolute bottom-4 right-4 flex gap-2">
-                    <button class="bg-white/20 p-2 rounded-full backdrop-blur-sm">⬅️</button>
-                    <button class="bg-white/20 p-2 rounded-full backdrop-blur-sm">➡️</button>
-                </div>
+                <img src="http://admin.evos.uz/uploads/sajt_ru_3_043fc9343f.png"
+                    class="rounded-[2.5rem] shadow-2xl w-full">
             </div>
         </div>
     </section>
-    {% for i in product %}
+
     <section class="max-w-7xl mx-auto py-16 px-4">
         <h2 class="text-3xl font-bold text-center mb-12">Sotuv xitlari</h2>
-        
+
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            
-            <div class="bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition border border-transparent hover:border-green-100 flex flex-col">
-                <img src="{{ i.img.first.image.url }}" class="w-full h-48 object-contain mb-4">
-                <h3 class="font-bold text-lg mb-2">{{ i.name }}</h3>
+
+            {% for i in product %}
+            <div
+                class="bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition border border-transparent hover:border-green-100 flex flex-col">
+
+                <a href="{% url 'product' i.slug %}" class="block mb-4">
+                    <img src="{{ i.img.first.image.url }}"
+                        class="w-full h-48 object-contain hover:scale-105 transition duration-300">
+                </a>
+
+                <a href="{% url 'product' i.slug %}" class="hover:text-green-700">
+                    <h3 class="font-bold text-lg mb-2">{{ i.name }}</h3>
+                </a>
+
                 <p class="text-gray-500 text-xs mb-4 flex-grow">{{ i.description }}</p>
-                
+
                 <div class="flex items-center justify-between mt-auto">
                     <span class="font-bold text-green-700">{{ i.price }} so'm</span>
                 </div>
-                
+
                 <div class="flex items-center gap-2 mt-4">
                     <div class="flex items-center bg-gray-100 rounded-lg flex-1 justify-between p-2">
-                        <button class="text-gray-500 font-bold px-2">-</button>
+                        <button class="text-gray-500 font-bold px-2 hover:text-red-500">-</button>
                         <span class="font-bold">1</span>
-                        <button class="text-gray-500 font-bold px-2">+</button>
+                        <button class="text-gray-500 font-bold px-2 hover:text-green-600">+</button>
                     </div>
                 </div>
             </div>
             {% endfor %}
 
-            
-
-            </div>
+        </div>
     </section>
 
 </body>
+
 </html>

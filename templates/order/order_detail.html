@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details | Premium UI</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #f4f7fe;
+            --primary: #4318ff;
+            --secondary: #a3aed0;
+            --text-main: #1b2559;
+            --card-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 40px 0;
+        }
+
+        /* Yuqori gradient karta */
+        .header-card {
+            background: linear-gradient(135deg, #4318ff 0%, #b08dff 100%);
+            border-radius: 24px;
+            padding: 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            margin-bottom: 30px;
+        }
+
+        .header-card::after {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        /* Oq detallar kartasi */
+        .content-card {
+            background: #ffffff;
+            border-radius: 24px;
+            border: none;
+            box-shadow: var(--card-shadow);
+            padding: 30px;
+            height: 100%;
+        }
+
+        .status-pill {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Jadval stili */
+        .custom-table {
+            margin-top: 20px;
+        }
+
+        .custom-table thead th {
+            background: #f8faff;
+            border: none;
+            color: var(--secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 15px 20px;
+        }
+
+        .custom-table tbody td {
+            padding: 20px;
+            border-bottom: 1px solid #f1f4f9;
+            font-weight: 500;
+        }
+
+        .product-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .product-icon {
+            width: 48px;
+            height: 48px;
+            background: #f4f7fe;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        /* Ma'lumot bloklari */
+        .info-label {
+            color: var(--secondary);
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .info-value {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-main);
+        }
+
+        .price-total {
+            background: var(--bg-color);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .btn-print {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn-print:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-card shadow">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h6 class="text-white-50 text-uppercase ls-1">Buyurtma Tafsilotlari</h6>
+                <h1 class="fw-bold mb-2">Order #{{ order.id }}</h1>
+                <div class="d-flex gap-3 align-items-center mt-3">
+                    <span class="status-pill"><i class="fas fa-check-circle me-2"></i>{{ order.get_is_status_display }}</span>
+                    <span class="text-white-50"><i class="far fa-calendar me-1"></i> {{ order.created_at|date:"d.m.Y, H:i" }}</span>
+                </div>
+            </div>
+            <div class="col-md-4 text-md-end mt-4 mt-md-0">
+                <button class="btn-print" onclick="window.print()">
+                    <i class="fas fa-print me-2"></i> Chekni chiqarish
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="content-card">
+                <h5 class="fw-bold mb-4">Xarid qilingan mahsulotlar</h5>
+                <div class="table-responsive">
+                    <table class="table custom-table">
+                        <thead>
+                            <tr>
+                                <th>Mahsulot nomi</th>
+                                <th class="text-center">Soni</th>
+                                <th class="text-end">Narxi</th>
+                                <th class="text-end">Jami</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in order.items.all %}
+                            <tr>
+                                <td>
+                                    <div class="product-box">
+                                        <div class="product-icon"><i class="fas fa-shopping-bag"></i></div>
+                                        <div>
+                                            <div class="info-value">{{ i.product.name }}</div>
+                                            <div class="small text-muted">{{ i.product.about|slice:":35" }}...</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-center fw-bold">{{ i.count }} ta</td>
+                                <td class="text-end">{{ i.price|intcomma }} UZS</td>
+                                <td class="text-end fw-bold text-primary">{{ i.item_total_price|intcomma }} UZS</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row justify-content-end mt-4">
+                    <div class="col-md-5">
+                        <div class="price-total">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Sub-total:</span>
+                                <span class="fw-bold">{{ order.total_order_price|intcomma }} UZS</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Dostavka:</span>
+                                <span class="text-success fw-bold">Bepul</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <h5 class="fw-bold mb-0">Umumiy:</h5>
+                                <h5 class="fw-bold text-primary mb-0">{{ order.total_order_price|intcomma }} UZS</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="content-card mb-4">
+                <h5 class="fw-bold mb-4">Mijoz ma'lumotlari</h5>
+                
+                <div class="mb-4 d-flex align-items-center gap-3">
+                    <div class="product-icon bg-light text-success"><i class="fas fa-user"></i></div>
+                    <div>
+                        <span class="info-label">F.I.O</span>
+                        <div class="info-value">{{ order.user.get_full_name|default:"Antony Hopkins" }}</div>
+                    </div>
+                </div>
+
+                <div class="mb-4 d-flex align-items-center gap-3">
+                    <div class="product-icon bg-light text-primary"><i class="fas fa-phone"></i></div>
+                    <div>
+                        <span class="info-label">Telefon</span>
+                        <div class="info-value">{{ order.phone|default:"+998 90 123 45 67" }}</div>
+                    </div>
+                </div>
+
+                <div class="mb-0 d-flex align-items-center gap-3">
+                    <div class="product-icon bg-light text-danger"><i class="fas fa-map-marker-alt"></i></div>
+                    <div>
+                        <span class="info-label">Manzil</span>
+                        <div class="info-value">{{ order.address|default:"Toshkent sh., Yunusobod tumani" }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card border-dashed" style="border: 2px dashed #e0e5f2; background: transparent; box-shadow: none;">
+                <h6 class="fw-bold mb-3">To'lov usuli</h6>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="https://img.icons8.com/color/48/000000/visa.png" width="35">
+                        <span class="fw-bold">Visa Card •••• 9809</span>
+                    </div>
+                    <i class="fas fa-check-circle text-success"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

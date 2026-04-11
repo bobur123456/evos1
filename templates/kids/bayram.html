@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVOS Bayramlar - Bolalar va o'smirlar uchun</title>
+    <style>
+        :root {
+            --evos-green: #00a651;
+            --evos-yellow: #ffeb3b;
+            --party-blue: #0096FF;
+            --party-red: #ff5252;
+            --text-dark: #1a1a1a;
+            --bg-gray: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-gray);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Header qismi */
+        .hero-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .hero-text h1 {
+            font-size: 24px;
+            margin: 0 0 15px 0;
+            font-weight: 800;
+        }
+
+        .evos-badge {
+            background-color: var(--evos-green);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .evos-badge h2 {
+            margin: 0;
+            font-size: 32px;
+            line-height: 1;
+        }
+
+        .evos-badge span {
+            background: var(--evos-yellow);
+            color: black;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .blue-info-banner {
+            background-color: var(--party-blue);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+
+        /* Party Card Styles */
+        .party-card {
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .party-title {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .party-layout {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 15px;
+            background: #f1f3f5;
+            padding: 15px;
+            border-radius: 15px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            min-width: 35px;
+            height: 35px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .step-content b {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .step-content p {
+            margin: 0;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .party-image img {
+            width: 100%;
+            max-width: 250px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Filiallar Akordeoni */
+        .accordion-box {
+            border: 1px solid #eee;
+            border-radius: 15px;
+            margin: 25px 0;
+            overflow: hidden;
+        }
+
+        .acc-header {
+            padding: 15px 20px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .acc-body {
+            padding: 15px 20px;
+            background: #fafafa;
+            display: none;
+            /* JavaScript bilan ochiladi */
+        }
+
+        .branch-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #ddd;
+            font-size: 13px;
+        }
+
+        .branch-name {
+            color: var(--party-blue);
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* Pastki Info Bloklar */
+        .footer-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info-block {
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #eee;
+            font-size: 13px;
+        }
+
+        .info-block span {
+            color: #888;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .info-block b {
+            font-size: 14px;
+            display: block;
+        }
+
+        .yellow-bg {
+            background-color: var(--evos-yellow);
+            border: none;
+        }
+
+        .price-text {
+            color: var(--party-blue);
+            font-size: 18px !important;
+        }
+
+        @media (max-width: 768px) {
+
+            .party-layout,
+            .footer-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        /* Tugma uchun asosiy konteyner */
+        .navigation-wrapper {
+            max-width: 900px;
+            margin: 20px auto 10px auto;
+            /* Sahifa markazida turishi uchun */
+            padding: 0 10px;
+        }
+
+        /* Ortga qaytish tugmasi stili */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 24px;
+            background-color: #ffffff;
+            color: #00a651;
+            /* EVOS yashil rangi */
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            border: 2px solid #00a651;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Tugma oldiga avtomatik strelka qo'shish */
+        .back-btn::before {
+            content: "←";
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        /* Sichqoncha ustiga kelganda effekt */
+        .back-btn:hover {
+            background-color: #00a651;
+            color: #ffffff;
+            transform: translateX(-5px);
+            /* Chapga biroz siljiydi */
+            box-shadow: 0 6px 15px rgba(0, 166, 81, 0.2);
+        }
+
+        /* Bosilganda effekt */
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Mobil qurilmalar uchun moslashuv */
+        @media (max-width: 768px) {
+            .navigation-wrapper {
+                margin: 15px 10px;
+            }
+
+            .back-btn {
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navigation-wrapper">
+        <a href="{% url 'aa' %}" class="back-btn">Ortga qaytish</a>
+    </div>
+    <div class="main-container">
+        <div class="hero-header">
+            <div class="hero-text">
+                <h1>EVOS Bayramlar - bolalar va o'smirlar uchun tug'ilgan kunlar va bayramlarni tashkil etish xizmati!
+                </h1>
+                <p style="font-size: 14px; color: #666;">Hurmatli mehmonlar, xush kelibsiz!</p>
+            </div>
+            <div class="evos-badge">
+
+                <h2>EVOS</h2>
+                <span>Bayramlar</span>
+
+            </div>
+        </div>
+
+        <div class="blue-info-banner">
+            Bayramni o'tkazish yoki buyurtma berish uchun nima qilish kerak?<br>
+            <span style="font-weight: normal; font-size: 14px;">Hammasi juda oddiy: EVOS BAYRAMLARning uchta xizmatidan
+                birini tanlash kerak</span>
+        </div>
+
+        <div class="party-card" id="party1">
+            <h2 class="party-title" style="color: var(--party-blue);">BAYRAM PARTY 1</h2>
+            <div class="party-layout">
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-num" style="background: var(--party-blue);">1</div>
+                        <div class="step-content"><b>EVOSga tashrif buyuring</b>
+                            <p>Bayram kuni o'zingiz tanlagan EVOS restoraniga boring va maroqli dam oling!</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num" style="background: var(--party-blue);">2</div>
+                        <div class="step-content"><b>Tug'ilgan kuningizni nishonlayotganingizni kassirga ayting</b>
+                            <p>Kassirga bayram to'plamini buyurtmangizga qo'shishini ayting.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num" style="background: var(--party-blue);">3</div>
+                        <div class="step-content"><b>Qalpoqchalarni oling</b>
+                            <p>Tug'ilgan kun egasi va mehmonlar uchun maxsus rangli qalpoqchalar.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num" style="background: var(--party-blue);">4</div>
+                        <div class="step-content"><b>Tort bilan tabrik</b>
+                            <p>Xodimlarimiz "Happy Birthday" qo'shig'i ostida tort va diplomlar taqdim etadilar.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="party-image">
+                    <img src="https://evos.uz/_next/image?url=%2Fimages%2Fboy-01.webp&w=1920&q=75" alt="Mascot">
+                </div>
+            </div>
+            <h3 style="font-size: 16px; margin-top: 30px;">BAYRAM PARTY 1 qaysi restoranlarda o'tkazish mumkin?</h3>
+            <div class="accordion-box">
+                <div class="acc-header">Toshkent shahri <span>▼</span></div>
+                <div class="acc-body" style="display: block;">
+                    <div class="branch-line"><span>Mirobod tumani</span><span class="branch-name">EVOS Qo'yliq tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Yakkasaroy tumani</span><span class="branch-name">EVOS Muqimiy tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Shayxontohur tumani</span><span class="branch-name">EVOS Tashkent
+                            City tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Shayxontohur tumani</span><span class="branch-name">EVOS Drujba
+                            tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Yunusobod tumani</span><span class="branch-name">EVOS Oloy tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Yunusobod tumani</span><span class="branch-name">EVOS Bahodir tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Mirzo Ulug'bek tumani</span><span class="branch-name">EVOS Parkent
+                            tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Chilonzor tumani</span><span class="branch-name">EVOS Chilonzor
+                            Shuhrat tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Chilonzor tumani</span><span class="branch-name">EVOS Gagarin tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Chilonzor tumani</span><span class="branch-name">EVOS Algoritm tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Yashnobod tumani</span><span class="branch-name">EVOS Lisunova-2
+                            tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Yangihayot tumani</span><span class="branch-name">EVOS
+                            Sergeli-Sputnik tarmoq
+                            restorani</span></div>
+                </div>
+
+                <div class="acc-header">Toshkent viloyati <span>▼</span></div>
+                <div class="acc-body">
+                    <div class="branch-line"><span>Yangiyo'l sh., Toshkent Shoh k.</span><span class="branch-name">EVOS
+                            Yangiyo'l
+                            tarmoq restorani</span></div>
+                    <div class="branch-line"><span>Bekobod sh., Buyuk Ipak Yo'li k.</span><span class="branch-name">EVOS
+                            Bekobod
+                            tarmoq restorani</span></div>
+                </div>
+
+                <div class="acc-header">Farg'ona viloyati <span>▼</span></div>
+                <div class="acc-body">
+                    <div class="branch-line"><span>Farg'ona sh., Sayilgoh k.</span><span class="branch-name">EVOS Afsona
+                            tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Qo'qon sh., Movarounnahr k.</span><span class="branch-name">EVOS
+                            Qo'qon tarmoq
+                            restorani</span></div>
+                </div>
+
+                <div class="acc-header">Samarqand viloyati <span>▼</span></div>
+                <div class="acc-body">
+                    <div class="branch-line"><span>Samarqand sh., Rudakiy k.</span><span class="branch-name">EVOS Farhod
+                            tarmoq
+                            restorani</span></div>
+                </div>
+
+                <div class="acc-header">Xorazm viloyati <span>▼</span></div>
+                <div class="acc-body">
+                    <div class="branch-line"><span>Urganch sh., Yangi Shovot Yo'li 3 k.</span><span
+                            class="branch-name">EVOS Daritol
+                            tarmoq restorani</span></div>
+                </div>
+            </div>
+            <div class="footer-info-grid">
+                <div class="info-block"><span>Vaqti?</span><b>Restoranning istalgan ish vaqtida</b></div>
+                <div class="info-block"><span>Mehmonlarning eng ko'p soni?</span><b>12 kishi</b></div>
+                <div class="info-block yellow-bg"><span>Narxi?</span><b class="price-text">Bepul</b></div>
+            </div>
+        </div>
+
+        <div class="party-card" id="party2">
+            <h2 class="party-title" style="color: var(--party-red);">BAYRAM PARTY 2</h2>
+            <div class="party-layout">
+                <div class="step-list">
+                    <div class="step-item">
+                        <div class="step-num" style="background: var(--party-red);">1</div>
+                        <div class="step-content"><b>Bayramni oldindan band qiling</b>
+                            <p>71 203 55 55 raqamiga qo'ng'iroq qilib, 2 raqamini bosing.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num" style="background: var(--party-red);">2</div>
+                        <div class="step-content"><b>Mehmonlar uchun taklifnomalarni oling</b>
+                            <p>Stol band qilingach, mehmonlaringizga tarqatish uchun taklifnomalar oling.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-num" style="background: var(--party-red);">3</div>
+                        <div class="step-content"><b>Akvagrim va O'yinlar</b>
+                            <p>Mehmon do'stlik ekspertlarimiz akvagrim va qiziqarli o'yinlar tashkil etadilar.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="party-image">
+                    <img src="https://evos.uz/_next/image?url=%2Fimages%2Fboy-01.webp&w=1920&q=75" alt="Mascot">
+                </div>
+            </div>
+
+            <div class="footer-info-grid">
+                <div class="info-block"><span>Band qilish mumkin bo'lgan vaqt?</span><b>13:00 dan 14:30 gacha bo'lgan
+                        vaqtdan tashqari</b></div>
+                <div class="info-block"><span>Mehmonlarning eng ko'p soni?</span><b>12 kishi</b></div>
+                <div class="info-block yellow-bg"><span>Narxi?</span><b class="price-text"
+                        style="color: var(--party-red);">Bepul</b></div>
+            </div>
+            <h3 style="font-size: 16px; margin-top: 30px;">BAYRAM PARTY 1 qaysi restoranlarda o'tkazish mumkin?</h3>
+            <div class="accordion-box">
+                <div class="acc-header">Toshkent shahri <span>▼</span></div>
+                <div class="acc-body" style="display: block;">
+                    <div class="branch-line"><span>Mirobod tumani</span><span class="branch-name">EVOS Qo'yliq tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Yakkasaroy tumani</span><span class="branch-name">EVOS Muqimiy tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Shayxontohur tumani</span><span class="branch-name">EVOS Tashkent
+                            City tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Shayxontohur tumani</span><span class="branch-name">EVOS Drujba
+                            tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Yunusobod tumani</span><span class="branch-name">EVOS Oloy tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Yunusobod tumani</span><span class="branch-name">EVOS Bahodir tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Mirzo Ulug'bek tumani</span><span class="branch-name">EVOS Parkent
+                            tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Chilonzor tumani</span><span class="branch-name">EVOS Chilonzor
+                            Shuhrat tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Chilonzor tumani</span><span class="branch-name">EVOS Gagarin tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Chilonzor tumani</span><span class="branch-name">EVOS Algoritm tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Yashnobod tumani</span><span class="branch-name">EVOS Lisunova-2
+                            tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Yangihayot tumani</span><span class="branch-name">EVOS
+                            Sergeli-Sputnik tarmoq
+                            restorani</span></div>
+                </div>
+
+                <div class="acc-header">Toshkent viloyati <span>▼</span></div>
+                <div class="acc-body">
+                    <div class="branch-line"><span>Yangiyo'l sh., Toshkent Shoh k.</span><span class="branch-name">EVOS
+                            Yangiyo'l
+                            tarmoq restorani</span></div>
+                    <div class="branch-line"><span>Bekobod sh., Buyuk Ipak Yo'li k.</span><span class="branch-name">EVOS
+                            Bekobod
+                            tarmoq restorani</span></div>
+                </div>
+
+                <div class="acc-header">Farg'ona viloyati <span>▼</span></div>
+                <div class="acc-body">
+                    <div class="branch-line"><span>Farg'ona sh., Sayilgoh k.</span><span class="branch-name">EVOS Afsona
+                            tarmoq
+                            restorani</span></div>
+                    <div class="branch-line"><span>Qo'qon sh., Movarounnahr k.</span><span class="branch-name">EVOS
+                            Qo'qon tarmoq
+                            restorani</span></div>
+                </div>
+
+                <div class="acc-header">Samarqand viloyati <span>▼</span></div>
+                <div class="acc-body">
+                    <div class="branch-line"><span>Samarqand sh., Rudakiy k.</span><span class="branch-name">EVOS Farhod
+                            tarmoq
+                            restorani</span></div>
+                </div>
+
+                <div class="acc-header">Xorazm viloyati <span>▼</span></div>
+                <div class="acc-body">
+                    <div class="branch-line"><span>Urganch sh., Yangi Shovot Yo'li 3 k.</span><span
+                            class="branch-name">EVOS Daritol
+                            tarmoq restorani</span></div>
+                </div>
+            </div </div>
+
+            <div class="party-card" id="takeaway">
+                <h2 class="party-title" style="color: var(--evos-green);">BAYRAM PARTY TAKEAWAY</h2>
+                <div class="party-layout">
+                    <div class="step-list">
+                        <div class="step-item">
+                            <div class="step-num" style="background: var(--evos-green);">1</div>
+                            <div class="step-content"><b>Uyda o'tkazish uchun to'plamga buyurtma bering</b>
+                                <p>Bayramni uyda nishonlash uchun maxsus to'plamni olib ketishga buyurtma bering.</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-num" style="background: var(--evos-green);">2</div>
+                            <div class="step-content"><b>Mehmonlar sonini aniqlashtiring</b>
+                                <p>Buyurtma berayotganda aniq mehmonlar sonini ayting.</p>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-num" style="background: var(--evos-green);">3</div>
+                            <div class="step-content"><b>Kuting</b>
+                                <p>Biz sizga uyda o'tkazish uchun barcha kerakli jihozlarni tayyorlab beramiz.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="party-image">
+                        <img src="https://evos.uz/_next/image?url=%2Fimages%2Fboy-02.webp&w=1920&q=75" alt="Mascot">
+                    </div>
+                </div>
+
+                <div class="footer-info-grid">
+                    <div class="info-block"><span>Vaqti?</span><b>Restoranning istalgan ish vaqtida</b></div>
+                    <div class="info-block"><span>Bir buyurtmada to'plamlarning soni?</span><b>12 kishi</b></div>
+                    <div class="info-block yellow-bg"><span>Narxi?</span><b class="price-text"
+                            style="color: var(--evos-green);">Bepul</b></div>
+                </div>
+
+
+
+                <h3 style="font-size: 16px; margin-top: 30px;">BAYRAM PARTY 1 qaysi restoranlarda o'tkazish mumkin?</h3>
+                <div class="accordion-box">
+                    <div class="acc-header">Toshkent shahri <span>▼</span></div>
+                    <div class="acc-body" style="display: block;">
+                        <div class="branch-line"><span>Mirobod tumani</span><span class="branch-name">EVOS Qo'yliq
+                                tarmoq
+                                restorani</span></div>
+                        <div class="branch-line"><span>Yakkasaroy tumani</span><span class="branch-name">EVOS Muqimiy
+                                tarmoq
+                                restorani</span></div>
+                        <div class="branch-line"><span>Shayxontohur tumani</span><span class="branch-name">EVOS Tashkent
+                                City tarmoq
+                                restorani</span></div>
+                        <div class="branch-line"><span>Shayxontohur tumani</span><span class="branch-name">EVOS Drujba
+                                tarmoq
+                                restorani</span></div>
+                        <div class="branch-line"><span>Yunusobod tumani</span><span class="branch-name">EVOS Oloy tarmoq
+                                restorani</span></div>
+                        <div class="branch-line"><span>Yunusobod tumani</span><span class="branch-name">EVOS Bahodir
+                                tarmoq
+                                restorani</span></div>
+                        <div class="branch-line"><span>Mirzo Ulug'bek tumani</span><span class="branch-name">EVOS
+                                Parkent tarmoq
+                                restorani</span></div>
+                        <div class="branch-line"><span>Chilonzor tumani</span><span class="branch-name">EVOS Chilonzor
+                                Shuhrat tarmoq
+                                restorani</span></div>
+                        <div class="branch-line"><span>Chilonzor tumani</span><span class="branch-name">EVOS Gagarin
+                                tarmoq
+                                restorani</span></div>
+                        <div class="branch-line"><span>Chilonzor tumani</span><span class="branch-name">EVOS Algoritm
+                                tarmoq
+                                restorani</span></div>
+                        <div class="branch-line"><span>Yashnobod tumani</span><span class="branch-name">EVOS Lisunova-2
+                                tarmoq
+                                restorani</span></div>
+                        <div class="branch-line"><span>Yangihayot tumani</span><span class="branch-name">EVOS
+                                Sergeli-Sputnik tarmoq
+                                restorani</span></div>
+                    </div>
+
+                    <div class="acc-header">Toshkent viloyati <span>▼</span></div>
+                    <div class="acc-body">
+                        <div class="branch-line"><span>Yangiyo'l sh., Toshkent Shoh k.</span><span
+                                class="branch-name">EVOS Yangiyo'l
+                                tarmoq restorani</span></div>
+                        <div class="branch-line"><span>Bekobod sh., Buyuk Ipak Yo'li k.</span><span
+                                class="branch-name">EVOS Bekobod
+                                tarmoq restorani</span></div>
+                    </div>
+
+                    <div class="acc-header">Farg'ona viloyati <span>▼</span></div>
+                    <div class="acc-body">
+                        <div class="branch-line"><span>Farg'ona sh., Sayilgoh k.</span><span class="branch-name">EVOS
+                                Afsona tarmoq
+                                restorani</span></div>
+                        <div class="branch-line"><span>Qo'qon sh., Movarounnahr k.</span><span class="branch-name">EVOS
+                                Qo'qon tarmoq
+                                restorani</span></div>
+                    </div>
+
+                    <div class="acc-header">Samarqand viloyati <span>▼</span></div>
+                    <div class="acc-body">
+                        <div class="branch-line"><span>Samarqand sh., Rudakiy k.</span><span class="branch-name">EVOS
+                                Farhod tarmoq
+                                restorani</span></div>
+                    </div>
+
+                    <div class="acc-header">Xorazm viloyati <span>▼</span></div>
+                    <div class="acc-body">
+                        <div class="branch-line"><span>Urganch sh., Yangi Shovot Yo'li 3 k.</span><span
+                                class="branch-name">EVOS Daritol
+                                tarmoq restorani</span></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            // Oddiy akordeon funksiyasi
+            document.querySelectorAll('.acc-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const body = header.nextElementSibling;
+                    if (body && body.classList.contains('acc-body')) {
+                        const isVisible = body.style.display === 'block';
+                        body.style.display = isVisible ? 'none' : 'block';
+                    }
+                });
+            });
+        </script>
+
+</body>
+
+</html>

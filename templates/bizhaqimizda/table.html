@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVOS - Table Service</title>
+    <style>
+        /* Umumiy uslublar (birinchi rasm uchun) */
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h2.main-title {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        /* Video va rasm-matn bloklari uchun uslublar */
+        .video-wrapper, .service-block {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .video-wrapper iframe {
+            width: 100%;
+            height: 500px;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .service-block {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .service-block.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .text-content, .image-content {
+            flex: 1;
+        }
+
+        .text-content h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .text-content p {
+            line-height: 1.6;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .image-content img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        /* --- Akkordeon (ikkinchi rasm) uchun uslublar --- */
+        .faq-wrapper {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-top: 50px; /* Birinchi qismdan masofa */
+        }
+
+        .faq-title {
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid #eee;
+        }
+
+        .accordion-header {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 15px 0;
+            text-align: left;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            outline: none;
+        }
+
+        .accordion-header::after {
+            content: '⌄'; /* Pastga strelka */
+            font-size: 20px;
+            color: #aaa;
+            transition: transform 0.3s;
+        }
+
+        .accordion-header.active::after {
+            transform: rotate(180deg); /* Ochiq holatda strelkani aylantirish */
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .accordion-content p {
+            margin: 0;
+            padding: 0 0 15px 0;
+        }
+
+        /* Responsive dizayn (mobil telefonlar uchun) */
+        @media (max-width: 768px) {
+            .service-block, .service-block.reverse {
+                flex-direction: column;
+                text-align: center;
+            }
+            .video-wrapper iframe { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <h2 class="main-title">Table Service</h2>
+        
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/placeholder_video_id" title="EVOS Table Service" allowfullscreen></iframe>
+        </div>
+
+        <div class="service-block">
+            <div class="text-content">
+                <h3>Bu nima?</h3>
+                <p>Table Service — mehmonlarga navbat kutmasdan buyurtma berish imkoniyatini taqdim etadigan qulay xizmat ko'rsatish shakli. Taom tayyor bo'lishi bilan uni o'zimiz to'g'ridan-to'g'ri stolingizga olib kelamiz.</p>
+            </div>
+            <div class="image-content">
+                <img src="placeholder_image1.jpg" alt="Service 1">
+            </div>
+        </div>
+
+        <div class="service-block reverse">
+            <div class="text-content">
+                <h3>Bizning vazifamiz</h3>
+                <p>Biz sharqona mehmondo'stlik an'analarini zamonaviy texnologiyalar bilan uyg'unlashtirib, tashrifingizni imkon qadar qulay qilishga intilamiz. Table Service bu maqsadda navbatsiz va ortiqcha harakatlarsiz erishishga yordam beradi.</p>
+            </div>
+            <div class="image-content">
+                <img src="placeholder_image2.jpg" alt="Service 2">
+            </div>
+        </div>
+
+        <div class="service-block">
+            <div class="text-content">
+                <h3>Bu kim uchun mo'ljallangan?</h3>
+                <p>Bolali ota-onalar, do'stlar davralari, band jadvalga ega mehmonlar va o'z vaqti hamda qulayligini qadrlaydigan barcha uchun. Siz dam olasiz — biz g'amxo'rlik qilamiz.</p>
+            </div>
+            <div class="image-content">
+                <img src="placeholder_image3.jpg" alt="Service 3">
+            </div>
+        </div>
+
+        <div class="faq-wrapper">
+            <h3 class="faq-title">Table Service qayerda amal qiladi?</h3>
+            
+            <div class="accordion-item">
+                <button class="accordion-header">Toshkent shahri</button>
+                <div class="accordion-content">
+                    <p>Bu yerda Toshkent shahridagi filiallar ro'yxati yoki ma'lumotlari bo'ladi.</p>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">Toshkent viloyati</button>
+                <div class="accordion-content">
+                    <p>Bu yerda Toshkent viloyatidagi filiallar ma'lumotlari bo'ladi.</p>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">Farg'ona viloyati</button>
+                <div class="accordion-content">
+                    <p>Bu yerda Farg'ona viloyatidagi filiallar ma'lumotlari bo'ladi.</p>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">Samarqand viloyati</button>
+                <div class="accordion-content">
+                    <p>Bu yerda Samarqand viloyatidagi filiallar ma'lumotlari bo'ladi.</p>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">Xorazm viloyati</button>
+                <div class="accordion-content">
+                    <p>Bu yerda Xorazm viloyatidagi filiallar ma'lumotlari bo'ladi.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Akkordeon funksiyasi uchun JavaScript
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const content = this.nextElementSibling;
+                
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null; // Yopish
+                } else {
+                    // Barcha ochiq akkordeonlarni yopish (agar kerak bo'lsa)
+                    document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+                    document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
+                    
+                    this.classList.add('active'); // Tugmani aktiv qilish
+                    content.style.maxHeight = content.scrollHeight + "px"; // Ochish
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

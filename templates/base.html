@@ -16,24 +16,70 @@
 </head>
 
 <body class="bg-gray-50">
-
     <header class="bg-white border-b sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
             <div class="flex items-center gap-8">
                 <img src="https://evos.uz/local/templates/evos/img/logo.png" alt="EVOS Logo" class="h-8">
-                <nav class="hidden md:flex space-x-6 text-sm font-medium text-gray-700">
-                    <a href="#" class="hover:text-green-600">Biz haqimizda</a>
-                    <a href="#" class="hover:text-green-600">Filiallar</a>
-                    <a href="#" class="hover:text-green-600">Vakansiyalar</a>
-                    <a href="#" class="hover:text-green-600">Table Service</a>
-                    <span class="bg-blue-500 text-white px-2 py-0.5 rounded text-[10px]">kids</span>
+                <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-700">
+
+                    <div class="relative group h-16 flex items-center">
+                        <a href="#" class="hover:text-green-600 flex items-center gap-1">
+                            Biz haqimizda
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-3 w-3 transition-transform group-hover:rotate-180" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </a>
+
+                        <div
+                            class="absolute top-[64px] left-0 hidden group-hover:block w-44 bg-white border border-gray-100 shadow-xl rounded-b-lg py-2 z-50">
+                            <a href="{% url 'yangilik' %}"
+                                class="block px-4 py-2 hover:bg-gray-50 hover:text-green-600 transition-colors">
+                                Yangiliklar
+                            </a>
+                            <a href="{% url 'kontaklar' %}"
+                                class="block px-4 py-2 hover:bg-gray-50 hover:text-green-600 transition-colors">
+                                Kontaktlar
+                            </a>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-green-600 transition-colors">
+                                Sertifikatlar
+                            </a>
+                        </div>
+                    </div>
+                    <a href="{% url 'felyal' %}" class="hover:text-green-600">Filiallar</a>
+                    <a href="{% url 'vaca' %}" class="hover:text-green-600">Vakansiyalar</a>
+                    <a href="{% url 'table' %}" class="hover:text-green-600">Table Service</a>
+
+                    <div class="relative group">
+                        <button
+                            class="bg-[#0096FF] text-white px-3 py-1 rounded-lg text-[13px] font-bold transform -rotate-2 hover:rotate-0 transition-all duration-200">
+                            kids
+                        </button>
+
+                        <div
+                            class="absolute left-0 mt-2 w-48 bg-white border border-gray-100 shadow-xl rounded-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                            <a href="{% url 'uyingoh' %}" class="block px-4 py-2 text-[#0096FF] hover:bg-blue-50 text-sm font-medium">
+                                Bolalar maydonchalari
+                            </a>
+                            <a href="{% url 'akvagrim' %}" class="block px-4 py-2 text-[#0096FF] hover:bg-blue-50 text-sm font-medium">
+                                Akvagrim
+                            </a>
+                            <a href="{% url 'sovga' %}" class="block px-4 py-2 text-[#0096FF] hover:bg-blue-50 text-sm font-medium">
+                                EVOS Bayramlar
+                            </a>
+                        </div>
+                    </div>
                 </nav>
             </div>
             <div class="flex items-center gap-4">
                 <div
                     class="hidden sm:flex items-center gap-2 text-sm text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full">
-                    <span>📍</span> <a href="{% url 'manzil' %}"><button class="hover:text-green-700">улица
-                            Марс</button></a>
+                    <span>📍</span>
+                    <a href="{% url 'manzil' %}">
+                        <button class="hover:text-green-700">улица Марс</button>
+                    </a>
                 </div>
                 <div class="bg-[#1c5c2d] text-white px-4 py-1.5 rounded-lg flex items-center gap-2 font-bold">
                     <span>🛍️</span>
@@ -43,7 +89,6 @@
             </div>
         </div>
     </header>
-
     <section class="bg-[#1c5c2d] text-white py-12 px-4 relative overflow-hidden">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12 mt-4">
             <div class="md:w-1/2">
@@ -93,14 +138,18 @@
                 <p class="text-gray-500 text-xs mb-4 flex-grow">{{ i.description }}</p>
 
                 <div class="flex items-center justify-between mt-auto">
-                    <span class="font-bold text-green-700">{{ i.price }} so'm</span>
+                    <span class="font-bold text-[#1c5c2d] text-lg">{{ i.price }} so'm</span>
                 </div>
 
                 <div class="flex items-center gap-2 mt-4">
-                    <div class="flex items-center bg-gray-100 rounded-lg flex-1 justify-between p-2">
-                        <button class="text-gray-500 font-bold px-2 hover:text-red-500">-</button>
-                        <span class="font-bold">1</span>
-                        <button class="text-gray-500 font-bold px-2 hover:text-green-600">+</button>
+                    <div class="flex items-center bg-[#f1f3f5] rounded-xl flex-1 justify-between p-3">
+                        <button
+                            class="text-gray-400 font-bold px-3 text-xl hover:text-red-500 transition-colors">-</button>
+
+                        <span class="font-bold text-black text-lg">1</span>
+
+                        <button
+                            class="text-gray-400 font-bold px-3 text-xl hover:text-green-600 transition-colors">+</button>
                     </div>
                 </div>
             </div>
@@ -109,6 +158,29 @@
         </div>
     </section>
 
+    <script>
+        // Har bir mahsulot kartasidagi counterlarni topib chiqamiz
+        document.querySelectorAll('.flex-1.justify-between').forEach(counter => {
+            const minusBtn = counter.querySelector('button:first-child');
+            const plusBtn = counter.querySelector('button:last-child');
+            const countSpan = counter.querySelector('span');
+
+            // Plus tugmasi bosilganda
+            plusBtn.addEventListener('click', () => {
+                let count = parseInt(countSpan.innerText);
+                countSpan.innerText = count + 1;
+            });
+
+            // Minus tugmasi bosilganda
+            minusBtn.addEventListener('click', () => {
+                let count = parseInt(countSpan.innerText);
+                // Faqat 1 tadan ko'p bo'lsagina kamaytiradi
+                if (count > 1) {
+                    countSpan.innerText = count - 1;
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

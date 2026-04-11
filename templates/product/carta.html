@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zamonaviy To'lov Paneli</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Zamonaviy O'zgaruvchilar */
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #ec4899;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
+        }
+
+        /* Umumiy fonni boyitish */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Glassmorphism Card Effekti */
+        .payment-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: var(--shadow-md);
+            width: 100%;
+            max-width: 420px;
+            transition: transform 0.3s ease;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .payment-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Sarlavhalar */
+        .card-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 0.5rem 0;
+            text-align: center;
+        }
+
+        .card-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* To'lov usullari dizayni */
+        .payment-options {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .payment-option-input {
+            display: none; /* Standart radioni yashirish */
+        }
+
+        .payment-option-label {
+            display: flex;
+            align-items: center;
+            padding: 1.2rem;
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .payment-option-label:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Tanlangan holat */
+        .payment-option-input:checked + .payment-option-label {
+            border-color: var(--primary);
+            background: #f5f3ff;
+            animation: pulse 0.4s ease-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* Custom Radio tugmachasi */
+        .custom-radio {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%;
+            margin-right: 15px;
+            position: relative;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .payment-option-input:checked + .payment-option-label .custom-radio {
+            border-color: var(--primary);
+            background: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .custom-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 0.2s ease;
+        }
+
+        .payment-option-input:checked + .payment-option-label .custom-radio::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .option-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Tugma dizayni */
+        .pay-btn-container {
+            display: block;
+            text-decoration: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 1.2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Animatsiya yuklanishda */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="payment-card">
+    <h2 class="card-title">To'lov</h2>
+    <p class="card-subtitle">O'zingizga qulay usulni tanlang</p>
+    
+    <div class="payment-options">
+        <label>
+            <input type="radio" name="payment_method" value="humo" class="payment-option-input" checked>
+            <span class="payment-option-label">
+                <span class="custom-radio"></span>
+                <span class="option-name">HUMO</span>
+            </span>
+        </label>
+
+        <label>
+            <input type="radio" name="payment_method" value="uzcard" class="payment-option-input">
+            <span class="payment-option-label">
+                <span class="custom-radio"></span>
+                <span class="option-name">UZCARD</span>
+            </span>
+        </label>
+
+        <label>
+            <input type="radio" name="payment_method" value="visa" class="payment-option-input">
+            <span class="payment-option-label">
+                <span class="custom-radio"></span>
+                <span class="option-name">VISA</span>
+            </span>
+        </label>
+
+        <label>
+            <input type="radio" name="payment_method" value="uzum" class="payment-option-input">
+            <span class="payment-option-label">
+                <span class="custom-radio"></span>
+                <span class="option-name">UZUM BANK</span>
+            </span>
+        </label>
+
+        <label>
+            <input type="radio" name="payment_method" value="click" class="payment-option-input">
+            <span class="payment-option-label">
+                <span class="custom-radio"></span>
+                <span class="option-name">CLICK</span>
+            </span>
+        </label>
+    </div>
+
+    <a href="{% url 'chekaut' %}" class="pay-btn-container">
+        <button type="button">To'lashni boshlash</button>
+    </a>
+</div>
+
+</body>
+</html>

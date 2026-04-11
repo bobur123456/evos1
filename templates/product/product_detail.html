@@ -260,9 +260,11 @@
                         <div class="cnt-num" id="qty">1</div>
                         <button class="cnt-btn" onclick="updateQty(1)">+</button>
                     </div>
-                    <button class="add-to-cart-btn" {% if product.count == 0 %} disabled style="background:#ccc;" {% endif %}>
+                   <a href="{% url 'savat' %}">
+                     <button class="add-to-cart-btn" {% if product.count == 0 %} disabled style="background:#ccc;" {% endif %}>
                         Savatga qo'shish
                     </button>
+                   </a>
                 </div>
             </div>
         </div>

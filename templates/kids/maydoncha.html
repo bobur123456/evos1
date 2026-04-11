@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVOS - Bolalar maydonchalari</title>
+    <style>
+        :root {
+            --evos-green: #00a651;
+            --evos-yellow: #ffeb3b;
+            --text-dark: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* --- Navigatsiya Paneli --- */
+        .navbar {
+            background: white;
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .home-btn {
+            background-color: var(--evos-green);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .home-btn:hover {
+            background-color: #008541;
+            transform: scale(1.05);
+        }
+
+        /* --- Konteyner --- */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Yuqori qism */
+        .hero-section {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+
+        .hero-text { flex: 1; }
+        .hero-image { flex: 1; }
+        .hero-image img {
+            width: 100%;
+            border-radius: 15px;
+        }
+
+        h1 { font-size: 28px; margin-bottom: 10px; color: #000; }
+        h2 { font-size: 22px; margin-top: 0; }
+
+        /* Sariq blok va rasmli qism */
+        .grid-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .slider-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .yellow-box {
+            background-color: var(--evos-yellow);
+            padding: 30px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Info icon qismi */
+        .info-cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #fff;
+        }
+
+        .info-card {
+            flex: 1;
+            display: flex;
+            align-items: start;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .shapes-icon {
+            display: grid;
+            grid-template-columns: 20px 20px;
+            gap: 5px;
+        }
+
+        .shape { width: 20px; height: 20px; }
+        .circle { border-radius: 50%; background: #ff5252; }
+        .triangle { 
+            width: 0; height: 0; 
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 20px solid #ffd740;
+        }
+        .blue-circle { border-radius: 50%; background: #448aff; }
+        .square { background: #ff6e40; }
+
+        /* Katta rasm */
+        .large-banner img {
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Akordeon Yangilangan qismi --- */
+        .accordion {
+            border-top: 1px solid #eee;
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid #eee;
+            padding: 0;
+        }
+
+        .accordion-header {
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .accordion-header:hover { color: var(--evos-green); }
+
+        .branch-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: #fafafa;
+        }
+
+        .accordion-item.active .branch-content {
+            max-height: 1200px; /* Barcha filiallar sig'ishi uchun */
+            padding-bottom: 10px;
+        }
+
+        .branch-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .dist-label { color: #666; width: 45%; }
+        .branch-name { color: #007bff; text-decoration: underline; cursor: pointer; text-align: right; }
+
+        .arrow {
+            border: solid #999;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(45deg); /* Pastga qaragan o'q */
+            transition: 0.3s;
+        }
+
+        .accordion-item.active .arrow {
+            transform: rotate(-135deg); /* Tepaga qaragan o'q */
+            margin-top: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section, .grid-section, .info-cards {
+                flex-direction: column;
+                grid-template-columns: 1fr;
+            }
+            .navbar { padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="{% url 'aa' %}" class="home-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        Bosh sahifa
+    </a>
+    <img src="https://evos.uz/_next/image?url=%2Fimages%2Flogo.png&w=128&q=75" alt="EVOS" style="height: 30px;">
+</nav>
+
+<div class="container">
+    <div class="hero-section">
+        <div class="hero-text">
+            <h1>Bolalar maydonchalari</h1>
+            <p style="color: var(--evos-green); font-weight: bold;">Rivojlanish va quvonch uchun qulay joy</p>
+            <p>EVOS tez ovqatlanish restoranlari tarmog'i o'z tashrif buyuruvchilariga g'amxo'rlik ko'rsatishda va oilaviy dam olish uchun yangi yechimlarni taklif qilishda davom etmoqda.</p>
+        </div>
+        <div class="hero-image">
+            <img src="https://evos.uz/_next/image?url=%2Fimages%2Fplayground.webp&w=1920&q=75" alt="Bolalar maydonchasi">
+        </div>
+    </div>
+
+    <div style="margin-bottom: 40px;">
+        <h2>Har bir bolalar maydonchasi xavfsiz joyda joylashgan</h2>
+        <p>EVOS xavfsizlik, yorqin dizayn va puxta o'ylangan funksionallikni asosiy omil deb biladi.</p>
+    </div>
+
+    <div class="grid-section">
+        <div class="slider-box">
+            <img src="https://evos.uz/_next/image?url=%2Fimages%2Fslider-1.webp&w=1920&q=75" alt="O'yin xonasi">
+        </div>
+        <div class="yellow-box">
+            <h3>Maydonchalarni bezatishda asosiy rang sifatida sariq rangni tanladik</h3>
+            <p>Bu rang quvonch, iliqlik va faollikni anglatib, bolalar uchun ham, ularning ota-onalari uchun ham baxt muhitini yaratadi.</p>
+        </div>
+    </div>
+
+    <div class="info-cards">
+        <div class="info-card">
+            <div class="shapes-icon">
+                <div class="shape circle"></div>
+                <div class="shape triangle"></div>
+                <div class="shape blue-circle"></div>
+                <div class="shape square"></div>
+            </div>
+            <p>EVOS'da biz bolali oilalar uchun xavfsiz va qiziqarli o'yin maydoniga ega bo'lish naqadar muhimligini tushunamiz.</p>
+        </div>
+        <div class="info-card">
+            <p>Bizning maydonchalarimiz bolalarga nafaqat quvonch, balki yangi bilim va ko'nikmalar beradigan maskandir.</p>
+        </div>
+    </div>
+
+    <div class="large-banner">
+        <img src="https://evos.uz/_next/image?url=%2Fimages%2Fplayground-05.webp&w=1920&q=75" alt="Xodim va bolalar">
+        <p style="text-align: center; font-style: italic; color: #555;">EVOS - kattayu kichik har bir mehmondan mamnun bo'ladigan joy!</p>
+    </div>
+
+    <div class="location-list">
+        <h2 style="border-left: 5px solid var(--evos-green); padding-left: 15px;">Bolalar maydonchalari mavjud EVOS restoranlari</h2>
+        <div id="main-accordion" class="accordion">
+            </div>
+    </div>
+</div>
+
+<script>
+    // Rasmlardagi barcha ma'lumotlar
+    const evosData = [
+        {
+            region: "Toshkent shahri",
+            branches: [
+                {dist: "Mirobod tumani", name: "EVOS Qo'yliq tarmog'i"},
+                {dist: "Yakkasaroy tumani", name: "EVOS Muqimiy tarmog'i"},
+                {dist: "Shayxontohur tumani", name: "EVOS Chorsu-gum tarmog'i"},
+                {dist: "Yunusobod tumani", name: "EVOS Bahodir tarmog'i"},
+                {dist: "Mirzo Ulug'bek tumani", name: "EVOS TTZ tarmog'i"},
+                {dist: "Chilonzor tumani", name: "EVOS Algoritm tarmog'i"},
+                {dist: "Uchtepa tumani", name: "EVOS Beshqayrag'och tarmog'i"},
+                {dist: "Uchtepa tumani", name: "EVOS Kattaqani tarmog'i"},
+                {dist: "Uchtepa tumani", name: "EVOS Foziltepa tarmog'i"},
+                {dist: "Olmazor tumani", name: "EVOS Oxunboboyev tarmog'i"},
+                {dist: "Olmazor tumani", name: "EVOS Orzu tarmog'i"},
+                {dist: "Yashnobod tumani", name: "EVOS Lisunova-2 tarmog'i"},
+                {dist: "Sergeli tumani", name: "EVOS Sergeli tarmog'i"},
+                {dist: "Yangihayot tumani", name: "EVOS Sergeli-Sputnik tarmog'i"},
+                {dist: "Yangihayot tumani", name: "EVOS Yangihayot tarmog'i"}
+            ]
+        },
+        {
+            region: "Toshkent viloyati",
+            branches: [
+                {dist: "Qibray sh., A.Navoiy ko'chasi", name: "EVOS Qibray tarmog'i"},
+                {dist: "Chirchiq sh., Istirohat bog'i ko'chasi", name: "EVOS Chirchiq-park tarmog'i"},
+                {dist: "Yangiyo'l sh., Toshkent shoh ko'chasi", name: "EVOS Yangiyo'l tarmog'i"},
+                {dist: "Bekobod sh., Buyuk Ipak Yo'li", name: "EVOS Bekobod tarmog'i"}
+            ]
+        },
+        {
+            region: "Farg'ona viloyati",
+            branches: [
+                {dist: "Farg'ona sh., Sayilgoh ko'chasi", name: "EVOS Afsona tarmog'i"},
+                {dist: "Farg'ona sh., A.Navoiy ko'chasi", name: "EVOS Frunze tarmog'i"},
+                {dist: "Qo'qon sh., Movarounnahr ko'chasi", name: "EVOS Qo'qon tarmog'i"}
+            ]
+        },
+        {
+            region: "Namangan viloyati",
+            branches: [
+                {dist: "Namangan sh., Nodira ko'chasi", name: "EVOS Namangan tarmog'i"}
+            ]
+        },
+        {
+            region: "Andijon viloyati",
+            branches: [
+                {dist: "Andijon sh., M.Yu.Lermontov ko'chasi", name: "EVOS Mikrorayon tarmog'i"}
+            ]
+        },
+        {
+            region: "Samarqand viloyati",
+            branches: [
+                {dist: "Samarqand sh., Rudakiy ko'chasi", name: "EVOS Samarqand-Farhod tarmog'i"},
+                {dist: "Samarqand sh., Dagbitskiy ko'chasi", name: "EVOS Dagbitskiy tarmog'i"},
+                {dist: "Samarqand sh., Orzu Mahmudov ko'chasi", name: "EVOS Bulvar tarmog'i"}
+            ]
+        },
+        {
+            region: "Qashqadaryo viloyati",
+            branches: [
+                {dist: "Qarshi sh., Mustaqillik ko'chasi", name: "EVOS Sardoba tarmog'i"}
+            ]
+        },
+        {
+            region: "Navoiy viloyati",
+            branches: [
+                {dist: "Navoiy sh., Islom Karimov ko'chasi", name: "EVOS Navoiy tarmog'i"}
+            ]
+        },
+        {
+            region: "Xorazm viloyati",
+            branches: [
+                {dist: "Urganch sh., Tinchlik ko'chasi", name: "EVOS Orion tarmog'i"}
+            ]
+        }
+    ];
+
+    const accordionContainer = document.getElementById('main-accordion');
+
+    // Akordeonni yaratish
+    evosData.forEach((item, index) => {
+        const accordionItem = document.createElement('div');
+        accordionItem.className = 'accordion-item';
+
+        accordionItem.innerHTML = `
+            <div class="accordion-header" onclick="toggleAccordion(this)">
+                <span>${item.region}</span>
+                <i class="arrow"></i>
+            </div>
+            <div class="branch-content">
+                ${item.branches.map(b => `
+                    <div class="branch-row">
+                        <span class="dist-label">${b.dist}</span>
+                        <span class="branch-name">${b.name}</span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        accordionContainer.appendChild(accordionItem);
+    });
+
+    // Ochilib yopilish funksiyasi
+    function toggleAccordion(header) {
+        const item = header.parentElement;
+        const isActive = item.classList.contains('active');
+        
+        // Boshqalarni yopish (ixtiyoriy)
+        document.querySelectorAll('.accordion-item').forEach(el => el.classList.remove('active'));
+        
+        if (!isActive) {
+            item.classList.add('active');
+        }
+    }
+</script>
+
+<footer>
+    © 2026 EVOS O'zbekiston. Barcha huquqlar himoyalangan.
+</footer>
+
+</body>
+</html>

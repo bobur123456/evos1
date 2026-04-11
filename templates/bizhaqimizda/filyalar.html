@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evos Filiallar</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header-section {
+            max-width: 1000px;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2 { font-size: 24px; margin: 0; }
+
+        .back-link { text-decoration: none; margin-right: auto; }
+
+        .back-btn {
+            background-color: #ffffff;
+            color: #555;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #f1f1f1;
+            border-color: #ccc;
+            color: #000;
+        }
+
+        .back-btn::before {
+            content: "←";
+            margin-right: 8px;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            background: #fff;
+            color: #333;
+        }
+
+        .btn.active {
+            background-color: #008944;
+            color: white;
+        }
+
+        .content-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .view-content {
+            display: none; 
+        }
+
+        .view-content.active {
+            display: block; 
+        }
+
+        .list-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: pointer; /* Bosish mumkinligini bildiradi */
+            transition: 0.2s;
+        }
+        
+        .list-item:hover {
+            border-left: 5px solid #008944;
+        }
+
+        .list-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .branch-img {
+            width: 60px;
+            height: 40px;
+            background: #008944;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            border-radius: 4px;
+        }
+
+        .time-info {
+            text-align: right;
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* Xarita konteyneri */
+        #map {
+            width: 100%;
+            height: 500px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+       <a href="{% url 'felyal' %}"> <h2>Filiallar</h2></a>
+        
+        <a href="{% url 'aa' %}" class="back-link">
+            <button class="back-btn">orqaga</button>
+        </a>
+
+        <div class="toggle-buttons">
+            <button class="btn active" id="btn-list" onclick="showView('list')">Ro'yxat</button>
+            <button class="btn" id="btn-map" onclick="showView('map')">Xarita</button>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <div id="list-view" class="view-content active">
+            <div class="list-item" onclick="goToLocation(41.3644, 69.2880, '001-Yunusobod')">
+                <div class="list-info">
+                    <div class="branch-img">EVOS</div>
+                    <strong>001-Yunusobod</strong>
+                </div>
+                <div class="time-info">
+                    Ish vaqti<br><strong>08:00 - 03:00</strong>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <div id="map-view" class="view-content">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script>
+        // Xaritani yaratish (Toshkent markazi)
+        var map = L.map('map').setView([41.3110, 69.2405], 12);
+
+        // Xarita qatlamini yuklash
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        var currentMarker;
+
+        // Filial tanlanganda xaritaga o'tish funksiyasi
+        function goToLocation(lat, lng, title) {
+            showView('map'); // Xarita bo'limiga o'tkazish
+            
+            if (currentMarker) {
+                map.removeLayer(currentMarker);
+            }
+
+            map.setView([lat, lng], 16); // O'sha koordinataga yaqinlashish
+            currentMarker = L.marker([lat, lng]).addTo(map)
+                .bindPopup('<b>' + title + '</b>')
+                .openPopup();
+        }
+
+        // Bo'limlarni almashtirish
+        function showView(viewType) {
+            const listView = document.getElementById('list-view');
+            const mapView = document.getElementById('map-view');
+            const btnList = document.getElementById('btn-list');
+            const btnMap = document.getElementById('btn-map');
+
+            if (viewType === 'list') {
+                listView.classList.add('active');
+                mapView.classList.remove('active');
+                btnList.classList.add('active');
+                btnMap.classList.remove('active');
+            } else {
+                mapView.classList.add('active');
+                listView.classList.remove('active');
+                btnMap.classList.add('active');
+                btnList.classList.remove('active');
+                
+                // Xarita ko'rinishi o'zgarganda o'lchamini qayta hisoblash (Leaflet uchun kerak)
+                setTimeout(() => { map.invalidateSize(); }, 200);
+            }
+        }
+    </script>
+
+</body>
+</html>

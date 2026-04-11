@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | {{ product.name }}</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-bg: #F5F7FF;
+            --success: #00d67d;
+            --border: #edf2f7;
+            --text: #2d3748;
+            --text-light: #718096;
+            --accent: #4c51bf;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: #f8fafc; padding: 20px; color: var(--text); }
+        .wrapper { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; color: #3182ce; }
+        .header i { font-size: 1.2rem; }
+        .header h2 { font-size: 1.1rem; font-weight: 700; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        @media (max-width: 700px) { .form-grid { grid-template-columns: 1fr; } }
+
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; }
+        label span { color: red; }
+
+        input[type="tel"], input[type="text"] {
+            width: 100%; padding: 12px 15px; border: 2px solid #e2e8f0;
+            border-radius: 12px; font-size: 0.95rem; background: #fff;
+            transition: 0.2s;
+        }
+        input:focus { outline: none; border-color: #4F46E5; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+
+        .address-box { position: relative; }
+        .address-box input { padding-right: 45px; border-radius: 12px; }
+        .map-btn {
+            position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+            width: 30px; height: 30px; background: #EEF2FF;
+            border: none; border-radius: 8px; color: #4F46E5;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+
+        .price-details {
+            background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px dashed #cbd5e0;
+        }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 12px; align-items: center; }
+        .price-row .label { color: var(--text-light); font-size: 0.9rem; }
+        .price-row .val { font-weight: 600; color: var(--text); text-align: right; }
+        .price-row .free { color: #10B981; }
+        .price-row .total-val { color: var(--accent); font-size: 1.3rem; font-weight: 700; }
+
+        .badge-hit {
+            background: #FF9F43; color: white; font-size: 10px; padding: 2px 6px;
+            border-radius: 4px; margin-left: 5px; vertical-align: middle;
+        }
+
+        .payment-list { display: flex; flex-direction: column; gap: 10px; }
+        .pay-item { 
+            display: flex; align-items: center; padding: 12px; 
+            border: 1px solid #e2e8f0; border-radius: 10px; cursor: pointer; 
+        }
+        .pay-item input { width: 18px; height: 18px; margin-right: 12px; }
+        .pay-text b { font-size: 0.9rem; display: block; }
+        .pay-text span { font-size: 0.75rem; color: var(--text-light); }
+
+        #map-container { height: 0; overflow: hidden; opacity: 0; transition: 0.4s; }
+        #map-container.open { height: 250px; opacity: 1; margin: 15px 0; border-radius: 12px; border: 1px solid #e2e8f0; }
+        #map { height: 100%; width: 100%; }
+
+        .footer-card {
+            border: 2px solid var(--success); display: flex; justify-content: space-between;
+            align-items: center; padding: 20px 30px;
+        }
+        .btn-confirm {
+            background: var(--success); color: white; border: none;
+            padding: 14px 30px; border-radius: 10px; font-weight: 700;
+            cursor: pointer; display: flex; align-items: center; gap: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="card">
+            <div class="header">
+                <i class="fas fa-map-marker-alt"></i>
+                <h2>Yetkazib berish</h2>
+            </div>
+            <div class="form-grid">
+                <div>
+                    <label>Telefon <span>*</span></label>
+                    <input type="tel" value="+998 ">
+                </div>
+                <div>
+                    <label>Manzil (Bino, xonadon) <span>*</span></label>
+                    <div class="address-box">
+                        <input type="text" placeholder="Masalan: 14-uy, 22-xonadon">
+                        <button class="map-btn" onclick="toggleMap()">
+                            <i class="fas fa-location-arrow"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="map-container">
+                <div id="map"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="header">
+                <i class="fas fa-credit-card"></i>
+                <h2>To'lov va Hisob-kitob</h2>
+            </div>
+
+            <div class="form-grid">
+                <div class="price-details">
+                    <div class="price-row">
+                        <span class="label">Mahsulot nomi:</span>
+                        <span class="val">
+                            {{ product.name }}
+                            {% if product.is_hit %}
+                            <span class="badge-hit">HIT</span>
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="price-row">
+                        <span class="label">Asl narxi:</span>
+                        <span class="val">{{ asl_narxi }} so'm</span>
+                    </div>
+
+                    {% if chegirma_foizi > 0 %}
+                    <div class="price-row">
+                        <span class="label">Chegirma:</span>
+                        <span class="val" style="color: #ef4444;">-{{ chegirma_foizi }}%</span>
+                    </div>
+                    {% endif %}
+
+                    <div class="price-row">
+                        <span class="label">Yetkazib berish:</span>
+                        <span class="val free">Bepul</span>
+                    </div>
+
+                    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+
+                    <div class="price-row">
+                        <span style="font-weight: 700; font-size: 1.1rem;">Jami narx:</span>
+                        <span class="total-val">{{ jami_narx }} so'm</span>
+                    </div>
+                </div>
+
+                <div>
+                    <label>To'lov turi <span>*</span></label>
+                    <div class="payment-list">
+                        <label class="pay-item">
+                            <input type="radio" name="payment" checked>
+                            <div class="pay-text">
+                                <b>Naqd pul</b>
+                                <span>Qabul qilganda to'lash</span>
+                            </div>
+                        </label>
+                        <label class="pay-item">
+                            <input type="radio" name="payment" onclick="window.location.href='{% url 'carta' %}'">
+                            <div class="pay-text">
+                                <b>Karta orqali</b>
+                                <span>Payme, Click, Uzum</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card footer-card">
+            <div class="footer-info">
+                <h3>Buyurtmani yakunlash</h3>
+                <p style="font-size: 0.8rem; color: var(--text-light);">Tugmani bosish orqali shartlarga rozilik bildirasiz.</p>
+            </div>
+            <a href="{% url 'order_list' %}"><button class="btn-confirm">
+                <i class="fas fa-check-circle"></i> Tasdiqlash va To'lash
+            </button></a>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        let map, marker, mapInit = false;
+        function toggleMap() {
+            const container = document.getElementById('map-container');
+            container.classList.toggle('open');
+            if (!mapInit) {
+                setTimeout(() => {
+                    map = L.map('map').setView([41.311, 69.240], 13);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                    marker = L.marker([41.311, 69.240], { draggable: true }).addTo(map);
+                    mapInit = true;
+                }, 400);
+            }
+        }
+    </script>
+</body>
+</html>

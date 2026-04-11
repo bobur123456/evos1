@@ -3,419 +3,299 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evos | Food Delivery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
+    <title>Savatcha</title>
     <style>
-        :root {
-            --primary: #007d53;
-            --primary-hover: #005f3f;
-            --accent: #ffc107;
-            --bg: #f4f7f6;
-            --white: #ffffff;
-            --text-main: #2d3436;
-            --text-muted: #636e72;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
-            --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
-            --radius: 16px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        .cart-container {
             font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 800px;
+            margin: 20px auto;
         }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            padding-bottom: 50px;
-        }
-
-        /* Sarlavha */
-        header {
-            background: var(--white);
-            padding: 15px 5%;
+        .cart-title {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: var(--shadow-sm);
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #4285f4;
+            margin-bottom: 20px;
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--primary);
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .cart-table th {
+            text-align: left;
+            font-size: 13px;
+            color: #718096;
+            font-weight: 500;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .cart-item td {
+            padding: 20px 0;
+        }
+
+        .item-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .badge-hit {
+            background: #FF9F43;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
+            vertical-align: middle;
+            text-transform: uppercase;
+        }
+
+        .remove-btn {
+            color: #f56565;
+            font-size: 12px;
+            cursor: pointer;
             text-decoration: none;
         }
 
-        /* Mahsulotlar To'plami */
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
-        }
-
-        /* Mahsulot Kartasi */
-        .product-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(0,0,0,0.02);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .img-wrapper {
-            width: 100%;
-            height: 180px;
-            overflow: hidden;
-            border-radius: 12px;
-            margin-bottom: 15px;
-        }
-
-        .product-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .product-card:hover .product-img {
-            transform: scale(1.1);
-        }
-
-        .product-info h3 {
-            font-size: 18px;
-            margin-bottom: 8px;
-            height: 44px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .price-tag {
-            color: var(--primary);
-            font-weight: 800;
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-
-        .add-to-cart-btn {
-            background: var(--accent);
-            border: none;
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 700;
-            cursor: pointer;
+        .qty-control {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            width: fit-content;
+            overflow: hidden;
+        }
+
+        .qty-control button {
+            background: #fff;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 16px;
             transition: 0.2s;
+            user-select: none;
         }
 
-        .add-to-cart-btn:hover {
-            background: #eab000;
-            transform: scale(1.02);
-        }
-
-        /* SAVATCHA SIDEBAR */
-        #cartOverlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(5px);
-            z-index: 998;
-        }
-
-        #cartSidebar {
-            position: fixed;
-            top: 0;
-            right: -420px;
-            width: 400px;
-            height: 100%;
-            background: var(--white);
-            z-index: 999;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            box-shadow: -10px 0 40px rgba(0,0,0,0.15);
-        }
-
-        .cart-open #cartSidebar { right: 0; }
-        .cart-open #cartOverlay { display: block; }
-
-        .cart-header {
-            padding: 25px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        #cartItemsList {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px 20px;
-        }
-
-        .cart-item {
-            display: flex;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #f9f9f9;
-        }
-
-        .cart-item img {
-            width: 70px;
-            height: 70px;
-            border-radius: 12px;
-            object-fit: cover;
-            margin-right: 15px;
-        }
-
-        .item-details { flex: 1; }
-        .item-details h4 { font-size: 15px; margin-bottom: 4px; }
-        .item-price { color: var(--primary); font-weight: 700; }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            background: #f1f3f5;
-            border-radius: 10px;
-            padding: 4px;
-        }
-
-        .qty-btn {
-            background: white;
+        .qty-control input {
+            width: 40px;
+            text-align: center;
             border: none;
-            width: 28px;
-            height: 28px;
-            border-radius: 7px;
-            cursor: pointer;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: #f1f5f9;
+            font-weight: 700;
+            padding: 8px 0;
+            outline: none;
+        }
+
+        .item-price {
+            font-weight: 700;
+            font-size: 16px;
+            text-align: right;
         }
 
         .cart-footer {
-            padding: 25px;
-            border-top: 1px solid #eee;
-            background: #fafafa;
-        }
-
-        .total-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
-            font-size: 18px;
-            font-weight: 800;
+            align-items: center;
+            margin-top: 24px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        .checkout-button {
-            width: 100%;
-            padding: 18px;
-            background: var(--primary);
+        .total-price {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .total-price span {
+            color: #4285f4;
+        }
+
+        .promo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .promo-input {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 15px;
+            outline: none;
+            font-size: 14px;
+            min-width: 120px;
+        }
+
+        .promo-apply-btn {
+            background: #4285f4;
             color: white;
             border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 700;
+            border-radius: 10px;
+            padding: 10px 15px;
+            font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
         }
 
-        .checkout-button:hover { background: var(--primary-hover); }
-        .checkout-button:disabled { background: #ccc; cursor: not-allowed; }
-
-        @media (max-width: 480px) {
-            #cartSidebar { width: 100%; right: -100%; }
+        .apply-btn {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <a href="{% url 'aa' %}" class="logo">Evos</a>
-    <div onclick="toggleCart(true)" style="position: relative; cursor: pointer;">
-        <i data-lucide="shopping-basket" style="color: var(--primary);"></i>
-        <span id="cartCount" style="position: absolute; top: -8px; right: -8px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold;">0</span>
-    </div>
-</header>
-
-<div class="container">
-    <div class="product-grid">
-        {% for product in products %}
-        <div class="product-card">
-            <div class="img-wrapper">
-                {% with first_img=product.img.first %}
-                    <img src="{% if first_img %}{{ first_img.image.url }}{% else %}https://via.placeholder.com/300x200{% endif %}" 
-                         alt="{{ product.name }}" class="product-img">
-                {% endwith %}
-            </div>
-            
-            <div class="product-info">
-                <h3>{{ product.name }}</h3>
-                <p class="price-tag">{{ product.price|floatformat:0 }} so'm</p>
-            </div>
-
-            <button class="add-to-cart-btn" 
-                    onclick="addToCart('{{ product.id }}', '{{ product.name|escapejs }}', {{ product.price }}, '{% with i=product.img.first %}{% if i %}{{ i.image.url }}{% endif %}{% endwith %}')">
-                <i data-lucide="plus-circle" size="18"></i>
-                Savatga qo'shish
-            </button>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-
-<div id="cartOverlay" onclick="toggleCart(false)"></div>
-
-<div id="cartSidebar">
-    <div class="cart-header">
-        <h2 style="display: flex; align-items: center; gap: 10px;">
-            <i data-lucide="shopping-cart"></i> Buyurtmangiz
-        </h2>
-        <i data-lucide="x" onclick="toggleCart(false)" style="cursor: pointer; color: var(--text-muted);"></i>
+<div class="cart-container">
+    <div class="cart-title">
+        🛒 Savatchadagi mahsulotlar
     </div>
 
-    <div id="cartItemsList">
-        </div>
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Mahsulot</th>
+                <th style="text-align: center;">Soni</th>
+                <th style="text-align: right;">Narxi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr class="cart-item">
+                <td>
+                    <div class="item-name">
+                        {{ item.product.name }} 
+                        {% if item.product.is_hit %}
+                        <span class="badge-hit">HIT</span>
+                        {% endif %}
+                    </div>
+                    <a href="#" class="remove-btn">O'chirish</a>
+                </td>
+                <td style="display: flex; justify-content: center;">
+                    <div class="qty-control">
+                        <button type="button" onclick="decrement(this)">-</button>
+                        <input type="text" class="qty-input" 
+                               data-unit-price="{{ item.product.sale|default:item.product.price }}" 
+                               value="{{ item.quantity }}" readonly>
+                        <button type="button" onclick="increment(this)">+</button>
+                    </div>
+                </td>
+                <td class="item-price">
+                    {% if item.product.sale > 0 %}
+                        <div style="font-size: 0.75rem; color: #a0aec0; text-decoration: line-through;">
+                            {{ item.product.price }} UZS
+                        </div>
+                        <div style="color: #e53e3e;" class="item-price-val">
+                            {{ item.subtotal }} UZS 
+                        </div>
+                    {% else %}
+                        <div class="item-price-val">{{ item.product.price }} UZS</div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <div class="cart-footer">
-        <div class="total-row">
-            <span>Jami:</span>
-            <span id="totalPrice" style="color: var(--primary);">0 so'm</span>
+        <div class="total-price">
+            Jami: <span id="total-display">{{ total_price }} UZS</span>
         </div>
-        <button id="checkoutBtn" onclick="goToCheckout()" class="checkout-button">
-            Buyurtma berish
-        </button>
+        
+        <div class="promo-section">
+            <div id="promo-status" style="display: none; color: #28a745; font-weight: bold; margin-right: 10px;">
+                ✅ <span id="discount-percent">0</span>% chegirma qo'llanildi!
+            </div>
+
+            <input type="text" id="promo-code-input" class="promo-input" placeholder="Promokod">
+            <button type="button" id="apply-promo-btn" class="promo-apply-btn" onclick="applyCoupon()">Qo'llash</button>
+            
+            <a href="{% url 'chekaut' %}" style="text-decoration: none;">
+                <button type="button" class="apply-btn">chekaut</button>
+            </a>
+        </div>
     </div>
 </div>
 
 <script>
-    // Ikonkalarni yuklash
-    lucide.createIcons();
+    let discountRate = 0;
 
-    // LocalStorage-dan ma'lumotlarni olish
-    let cart = JSON.parse(localStorage.getItem('falcon_cart')) || [];
-
-    function toggleCart(show) {
-        document.body.classList.toggle('cart-open', show);
-    }
-
-    function addToCart(id, name, price, img) {
-        const item = cart.find(i => i.id === id);
-        if (item) {
-            item.qty++;
-        } else {
-            cart.push({ 
-                id, 
-                name, 
-                price, 
-                img: img || 'https://via.placeholder.com/100', 
-                qty: 1 
-            });
-        }
-        saveAndRender();
-        toggleCart(true);
-    }
-
-    function changeQty(id, delta) {
-        const item = cart.find(i => i.id === id);
-        if (item) {
-            item.qty += delta;
-            if (item.qty <= 0) {
-                cart = cart.filter(i => i.id !== id);
-            }
-        }
-        saveAndRender();
-    }
-
-    function saveAndRender() {
-        localStorage.setItem('falcon_cart', JSON.stringify(cart));
-        renderCart();
-    }
-
-    function renderCart() {
-        const list = document.getElementById('cartItemsList');
-        const totalSpan = document.getElementById('totalPrice');
-        const countSpan = document.getElementById('cartCount');
-        const checkoutBtn = document.getElementById('checkoutBtn');
+    // Har bir qatorning summasini hisoblash va ko'rsatish
+    function calculateRow(row) {
+        const qtyInput = row.querySelector('.qty-input');
+        const priceDisplay = row.querySelector('.item-price-val');
+        const unitPrice = parseFloat(qtyInput.dataset.unitPrice);
         
-        countSpan.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+        let qty = parseInt(qtyInput.value) || 1;
+        let subtotal = qty * unitPrice;
+        
+        // Faqat shu mahsulot qatoridagi narxni yangilash
+        priceDisplay.innerText = Math.round(subtotal).toLocaleString() + " UZS";
+        
+        return subtotal;
+    }
 
-        if (cart.length === 0) {
-            list.innerHTML = `
-                <div style="text-align:center; padding: 50px 0; color:#ccc;">
-                    <i data-lucide="shopping-bag" size="60" style="margin-bottom:15px; opacity:0.3;"></i>
-                    <p>Savatchangiz bo'sh</p>
-                </div>`;
-            totalSpan.innerText = "0 so'm";
-            checkoutBtn.disabled = true;
-            lucide.createIcons();
-            return;
-        }
-
-        checkoutBtn.disabled = false;
+    // Umumiy savat summasini yangilash
+    function updateCartTotal() {
         let total = 0;
+        const rows = document.querySelectorAll('.cart-item');
         
-        list.innerHTML = cart.map(item => {
-            total += item.price * item.qty;
-            return `
-                <div class="cart-item">
-                    <img src="${item.img}">
-                    <div class="item-details">
-                        <h4>${item.name}</h4>
-                        <div class="item-price">${(item.price * item.qty).toLocaleString()} so'm</div>
-                    </div>
-                    <div class="quantity-controls">
-                        <button class="qty-btn" onclick="changeQty('${item.id}', -1)">-</button>
-                        <span style="margin:0 12px; font-weight:700;">${item.qty}</span>
-                        <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
-                    </div>
-                </div>
-            `;
-        }).join('');
-        
-        totalSpan.innerText = total.toLocaleString() + " so'm";
-        lucide.createIcons();
+        rows.forEach(row => {
+            total += calculateRow(row);
+        });
+
+        // Promokod bo'lsa, umumiy summadan chegirish
+        if (discountRate > 0) {
+            total = total - (total * discountRate / 100);
+        }
+
+        document.getElementById('total-display').innerText = Math.round(total).toLocaleString() + " UZS";
     }
 
-    function goToCheckout() {
-        // Django url-ga yo'naltirish
-        window.location.href = "{% url 'manzil' %}"; 
+    function increment(btn) {
+        // Tugma orqali o'zining yonidagi inputni topish
+        const input = btn.parentElement.querySelector('.qty-input');
+        input.value = parseInt(input.value) + 1;
+        updateCartTotal();
     }
 
-    // Birinchi marta yuklanganda
-    renderCart();
+    function decrement(btn) {
+        const input = btn.parentElement.querySelector('.qty-input');
+        let current = parseInt(input.value);
+        if (current > 1) {
+            input.value = current - 1;
+            updateCartTotal();
+        }
+    }
+
+    function applyCoupon() {
+        const codeInput = document.getElementById('promo-code-input');
+        const code = codeInput.value.trim();
+
+        if (code === "bobur90") {
+            discountRate = 10;
+            document.getElementById('promo-status').style.display = "block";
+            document.getElementById('discount-percent').innerText = discountRate;
+            
+            codeInput.style.display = "none";
+            document.getElementById('apply-promo-btn').style.display = "none";
+            
+            updateCartTotal();
+        } else {
+            alert("Promokod xato yoki muddati o'tgan!");
+        }
+    }
 </script>
 
 </body>

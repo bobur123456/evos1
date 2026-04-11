@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVOS - Akvagrim</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .back-home {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background-color: #00a651;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .back-home:hover {
+            background-color: #008541;
+            transform: translateX(-5px);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-top: 40px;
+        }
+
+        .header-section {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 40px;
+            align-items: flex-start;
+        }
+
+        .header-text { flex: 1; }
+        .header-text h1 { font-size: 32px; margin-top: 0; }
+        
+        .header-image { flex: 1; }
+        .header-image img {
+            width: 100%;
+            border-radius: 20px;
+            object-fit: cover;
+        }
+
+        .cert-badge {
+            background-color: #00a651;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .brand-logos {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 30px 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .brand-logos img { height: 60px; filter: grayscale(20%); }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .green-info-box {
+            background-color: #00a651;
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+
+        .center-banner { margin-bottom: 30px; }
+        .center-banner img { width: 100%; border-radius: 20px; }
+
+        /* --- FILIALLAR VA AKORDEON STILI --- */
+        .schedule-section { margin-top: 50px; }
+        .schedule-title { font-size: 22px; font-weight: bold; margin-bottom: 20px; max-width: 600px; }
+
+        .accordion { border-top: 1px solid #eee; }
+        
+        .accordion-item {
+            border-bottom: 1px solid #eee;
+        }
+
+        .accordion-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .accordion-header:hover { background-color: #f9f9f9; }
+
+        .arrow {
+            border: solid #ccc;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(45deg);
+            transition: transform 0.3s;
+        }
+
+        .active .arrow { transform: rotate(-135deg); }
+
+        .accordion-content {
+            display: none;
+            padding: 10px 20px 20px 20px;
+            background-color: #fafafa;
+        }
+
+        .branch-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dotted #ddd;
+            font-size: 14px;
+        }
+
+        .branch-item:last-child { border-bottom: none; }
+        .branch-name { font-weight: bold; color: #00a651; }
+        .branch-time { color: #888; font-size: 12px; }
+
+        @media (max-width: 768px) {
+            .header-section, .gallery-grid { flex-direction: column; grid-template-columns: 1fr; }
+            .back-home { position: relative; top: 0; left: 0; margin-bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="{% url 'aa' %}" class="back-home">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+    Bosh sahifa
+</a>
+
+<div class="container">
+    <div class="header-section">
+        <div class="header-text">
+            <h1>Akvagrim</h1>
+            <p>Akvagrim shunchaki rasm chizish emas, balki eng faol va tinib-tinchimas bolalarni ham o'ziga jalb qiladigan qiziqarli mashg'ulotdir. Ustalar bolalarning yuzlarini ertak qahramonlari yoki superqahramonlarga aylantirishadi.</p>
+        </div>
+        <div class="header-image">
+            <img src="https://evos.uz/_next/image?url=%2Fimages%2Fkids-aquagrim.webp&w=1920&q=75" alt="Akvagrim jarayoni">
+        </div>
+    </div>
+
+    <div>
+        <span class="cert-badge">Sertifikatlangan bo'yoqlar</span>
+        <div class="brand-logos">
+            <img src="https://evos.uz/_next/image?url=%2Fimages%2Faquagrim-01.webp&w=1920&q=75" alt="MAG">
+            <img src="https://evos.uz/_next/image?url=%2Fimages%2Faquagrim-02.webp&w=1920&q=75" alt="TAG">
+            <img src="https://evos.uz/_next/image?url=%2Fimages%2Faquagrim-02.webp&w=1920&q=75" alt="TAG Art">
+            <img src="https://evos.uz/_next/image?url=%2Fimages%2Faquagrim-04.webp&w=1920&q=75" alt="TAG Art">
+        </div>
+        <p style="font-size: 13px; color: #666;">Akvagrim uchun faqat jahon darajasidagi sertifikatlangan bo'yoqlar ishlatiladi. Avstraliyada ishlab chiqarilgan MAG Professional va TAG Professional bo'yoqlari shular jumlasidandir.</p>
+    </div>
+
+    <div class="gallery-grid">
+        <img src="https://evos.uz/_next/image?url=%2Fimages%2Faquagrim-show-01.webp&w=1920&q=75" alt="Jamoa">
+        <img src="https://evos.uz/_next/image?url=%2Fimages%2Faquagrim-show-02.webp&w=1920&q=75" alt="Chizish">
+        <img src="https://evos.uz/_next/image?url=%2Fimages%2Faquagrim-show-03.webp&w=1920&q=75" alt="Natija">
+    </div>
+
+    <div class="green-info-box">
+        Loyiha ishga tushishidan oldin EVOS'ning barcha mutaxassislari jiddiy tayyorgarlikdan o'tdilar: 8 soat nazariya va 8 soat amaliyot. Mashg'ulotlarda akvagrim san'ati asoslari, xavfsizlik texnikasi o'rganildi.
+    </div>
+
+    <div class="center-banner">
+        <img src="https://evos.uz/_next/image?url=%2Fimages%2Faquagrim-show-03.webp&w=1920&q=75" alt="Bolalar bilan tadbir">
+        <p style="text-align: center; font-size: 13px; margin-top: 15px;">Akvagrim nafaqat bolalarga quvonch ulashadi, balki ota-onalarga ham biroz dam olish imkonini beradi. Eng muhimi, bu quvnoq va bepul!</p>
+    </div>
+
+    <div class="schedule-section">
+        <div class="schedule-title">
+            Kichik mehmonlarni restoranlarda soat 18:00dan 22:00gacha quvnoq o'zgarish kutmoqda:
+        </div>
+        
+        <div class="accordion">
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Toshkent shahri</span> <i class="arrow"></i>
+                </button>
+                <div class="accordion-content">
+                    <div class="branch-item"><span>Mirobod tumani</span> <span class="branch-name">EVOS Qo'yliq</span> <span class="branch-time">sh-y</span></div>
+                    <div class="branch-item"><span>Yunusobod tumani</span> <span class="branch-name">EVOS Oloy</span> <span class="branch-time">sh-y</span></div>
+                    <div class="branch-item"><span>Yunusobod tumani</span> <span class="branch-name">EVOS Bahodir</span> <span class="branch-time">sh-y</span></div>
+                    <div class="branch-item"><span>M.Ulug'bek tumani</span> <span class="branch-name">EVOS Parkent</span> <span class="branch-time">sh-y</span></div>
+                    <div class="branch-item"><span>Chilonzor tumani</span> <span class="branch-name">EVOS Magic City</span> <span class="branch-time">d-ch</span></div>
+                    <div class="branch-item"><span>Chilonzor tumani</span> <span class="branch-name">EVOS Algoritm</span> <span class="branch-time">sh-y</span></div>
+                    <div class="branch-item"><span>Yashnobod tumani</span> <span class="branch-name">EVOS Lisunova-2</span> <span class="branch-time">sh-y</span></div>
+                    <div class="branch-item"><span>Yangihayot tumani</span> <span class="branch-name">EVOS Sergeli Sputnik</span> <span class="branch-time">sh-y</span></div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Toshkent viloyati</span> <i class="arrow"></i>
+                </button>
+                <div class="accordion-content">
+                    <div class="branch-item"><span>Yangiyo'l sh.</span> <span class="branch-name">EVOS Yangiyo'l</span> <span class="branch-time">sh-y</span></div>
+                    <div class="branch-item"><span>Bekobod sh.</span> <span class="branch-name">EVOS Bekobod</span> <span class="branch-time">sh-y</span></div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Farg'ona viloyati</span> <i class="arrow"></i>
+                </button>
+                <div class="accordion-content">
+                    <div class="branch-item"><span>Farg'ona sh.</span> <span class="branch-name">EVOS Afsona</span> <span class="branch-time">sh-y</span></div>
+                    <div class="branch-item"><span>Qo'qon sh.</span> <span class="branch-name">EVOS Qo'qon</span> <span class="branch-time">sh-y</span></div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Samarqand viloyati</span> <i class="arrow"></i>
+                </button>
+                <div class="accordion-content">
+                    <div class="branch-item"><span>Samarqand sh.</span> <span class="branch-name">EVOS Farhod</span> <span class="branch-time">sh-y</span></div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <span>Xorazm viloyati</span> <i class="arrow"></i>
+                </button>
+                <div class="accordion-content">
+                    <div class="branch-item"><span>Urganch sh.</span> <span class="branch-name">EVOS Daritol</span> <span class="branch-time">sh-y</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Akordeon funksiyasi
+    document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const item = header.parentElement;
+            const content = header.nextElementSibling;
+
+            // Boshqa ochilganlarni yopish (ixtiyoriy)
+            document.querySelectorAll('.accordion-item').forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                    otherItem.querySelector('.accordion-content').style.display = 'none';
+                }
+            });
+
+            // Tanlanganni ochish/yopish
+            if (item.classList.contains('active')) {
+                item.classList.remove('active');
+                content.style.display = 'none';
+            } else {
+                item.classList.add('active');
+                content.style.display = 'block';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
